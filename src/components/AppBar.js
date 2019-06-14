@@ -20,7 +20,7 @@ function AppBar() {
   return (
     <Bar>
       <Heading level="4" margin="none">
-        Brand
+        App name
       </Heading>
       <Button icon={<User />} onClick={() => {}} />
     </Bar>
