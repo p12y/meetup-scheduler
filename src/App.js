@@ -1,11 +1,13 @@
-import React from 'react';
-import Dashboard from 'pages/Dashboard';
+import React from "react";
+import { Grommet } from "grommet";
+import theme from "config/theme";
+import AppBar from "components/AppBar";
 
 function App() {
   return (
-    <div className="App">
-      <Dashboard />
-    </div>
+    <Grommet theme={theme}>
+      <AppBar />
+    </Grommet>
   );
 }
 

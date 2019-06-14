@@ -1,8 +1,9 @@
 import React from 'react';
+import { Text } from 'grommet';
 
 function Dashboard() {
   return (
-    <div>Dashboard</div>
+    <Text>Dashboard</Text>
   );
 }
 
