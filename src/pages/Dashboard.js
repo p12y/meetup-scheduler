@@ -1,7 +1,9 @@
 import React from "react";
 import { Box, Heading, Button } from "grommet";
 import { AddCircle } from "grommet-icons";
+import { Link } from "react-router-dom";
 import PollItem from "components/dashboard/PollItem";
+import PageTitle from "components/common/PageTitle";
 
 const allPolls = [
   {
@@ -21,25 +23,11 @@ const allPolls = [
 function Dashboard() {
   return (
     <>
-      <Box justify="center" direction="row" pad="small">
-        <Box
-          direction="row"
-          align="center"
-          justify="between"
-          basis="2/3"
-          pad="small"
-        >
-          <Heading size="small" color="dark-2">
-            Your polls
-          </Heading>
-          <Button
-            primary
-            icon={<AddCircle />}
-            label="Create a poll"
-            onClick={() => {}}
-          />
-        </Box>
-      </Box>
+      <PageTitle title="Your polls" basis="2/3">
+        <Link to="/polls/new">
+          <Button primary icon={<AddCircle />} label="New poll" />
+        </Link>
+      </PageTitle>
       {allPolls.map(poll => (
         <PollItem
           key={poll.name}
