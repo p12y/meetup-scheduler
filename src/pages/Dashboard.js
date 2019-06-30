@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Heading, Button } from "grommet";
+import { Button } from "grommet";
 import { AddCircle } from "grommet-icons";
 import { Link } from "react-router-dom";
 import PollItem from "components/dashboard/PollItem";

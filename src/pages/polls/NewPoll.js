@@ -1,14 +1,5 @@
 import React, { useState } from "react";
-import {
-  Box,
-  Button,
-  Form,
-  FormField,
-  Calendar,
-  TextArea,
-  Grid,
-  Text
-} from "grommet";
+import { Box, Button, Form, FormField, Calendar, Grid, Text } from "grommet";
 import styled from "styled-components";
 import { FormNextLink } from "grommet-icons";
 import moment from "moment";
