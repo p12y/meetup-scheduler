@@ -4,6 +4,7 @@ import PageTitle from "components/common/PageTitle";
 import { Info, Location } from "grommet-icons";
 import { Text, Box } from "grommet";
 import DateBox from "components/poll/DateBox";
+import LoginLayer from "components/common/LoginLayer";
 
 const Container = styled.div`
   width: 80%;
@@ -41,8 +42,9 @@ function Poll() {
       <Box direction="row" wrap fill align="center">
         <DateBox date={new Date()} withVotes />
         <DateBox date={new Date()} withVotes />
-        <DateBox date={new Date()} withVotes />
+        <DateBox date={new Date()} withVotes top />
       </Box>
+      <LoginLayer />
     </Container>
   );
 }

@@ -2,7 +2,14 @@ import React from "react";
 import { Box, Text, Anchor } from "grommet";
 import moment from "moment";
 import styled from "styled-components";
-import { Like, Dislike } from "grommet-icons";
+import { Like, Dislike, Star } from "grommet-icons";
+
+const StarContainer = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 0.2em;
+`;
 
 const SelectButton = styled(Box)`
   cursor: pointer;
@@ -16,7 +23,11 @@ const ButtonContent = styled.span`
   padding-right: 0.2rem;
 `;
 
-function DateBox({ date, withVotes }) {
+const Container = styled(Box)`
+  position: relative;
+`;
+
+function DateBox({ date, withVotes, top }) {
   const momentDate = moment(date);
 
   const month = momentDate.format("MMM");
@@ -24,7 +35,7 @@ function DateBox({ date, withVotes }) {
   const dayOfWeek = momentDate.format("dddd");
 
   return (
-    <Box
+    <Container
       elevation="medium"
       background="brand"
       color="light"
@@ -35,6 +46,11 @@ function DateBox({ date, withVotes }) {
       margin="small"
       basis="small"
     >
+      {top && (
+        <StarContainer>
+          <Star color="accent-4" size="large" />
+        </StarContainer>
+      )}
       <Text weight="bold" margin="xsmall">
         {month}
       </Text>
@@ -77,7 +93,7 @@ function DateBox({ date, withVotes }) {
           <Anchor>See who voted</Anchor>
         </>
       )}
-    </Box>
+    </Container>
   );
 }
 
