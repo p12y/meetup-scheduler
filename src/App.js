@@ -1,14 +1,16 @@
 import React from "react";
 import { Grommet } from "grommet";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { connect } from "react-redux";
 import theme from "config/theme";
 import AppBar from "components/AppBar";
 import Dashboard from "pages/Dashboard";
 import NewPoll from "pages/polls/NewPoll";
 import Poll from "pages/polls/Poll";
+import { signIn, signOut } from "actions/auth";
 import "./App.css";
 
-function App() {
+function App(props) {
   return (
     <Router>
       <Grommet full theme={theme}>
@@ -21,4 +23,16 @@ function App() {
   );
 }
 
-export default App;
+const mapStateToProps = ({ auth }) => ({
+  auth
+});
+
+const mapDispatchToProps = dispatch => ({
+  signIn: () => dispatch(signIn()),
+  signOut: () => dispatch(signOut())
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App);
