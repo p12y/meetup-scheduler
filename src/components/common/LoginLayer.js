@@ -13,7 +13,6 @@ function LoginLayer() {
 
   return (
     <Box fill align="center" justify="center">
-      <Button icon={<GrommetIcons.Add />} label="Sign in" onClick={onOpen} />
       {open && (
         <Layer
           position="right"

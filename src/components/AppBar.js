@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Button, Heading } from "grommet";
-import { User } from "grommet-icons";
+import { Login } from "grommet-icons";
 
 const Bar = props => (
   <Box
@@ -22,7 +22,7 @@ function AppBar() {
       <Heading level="4" margin="none">
         App name
       </Heading>
-      <Button icon={<User />} onClick={() => {}} />
+      <Button icon={<Login />} onClick={() => {}} />
     </Bar>
   );
 }
