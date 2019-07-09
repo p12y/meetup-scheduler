@@ -1,5 +1,5 @@
-import React from "react";
-import { Box, Heading } from "grommet";
+import React from 'react';
+import { Box, Heading } from 'grommet';
 
 function PageTitle({ title, basis, children }) {
   return (

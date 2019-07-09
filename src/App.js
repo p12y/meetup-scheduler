@@ -1,14 +1,14 @@
-import React from "react";
-import { Grommet } from "grommet";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import { connect } from "react-redux";
-import theme from "config/theme";
-import AppBar from "components/AppBar";
-import Dashboard from "pages/Dashboard";
-import NewPoll from "pages/polls/NewPoll";
-import Poll from "pages/polls/Poll";
-import { signIn, signOut } from "actions/auth";
-import "./App.css";
+import React from 'react';
+import { Grommet } from 'grommet';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { connect } from 'react-redux';
+import theme from 'config/theme';
+import AppBar from 'components/AppBar';
+import Dashboard from 'pages/Dashboard';
+import NewPoll from 'pages/polls/NewPoll';
+import Poll from 'pages/polls/Poll';
+import { signIn, signOut } from 'actions/auth';
+import './App.css';
 
 function App(props) {
   return (
@@ -24,12 +24,12 @@ function App(props) {
 }
 
 const mapStateToProps = ({ auth }) => ({
-  auth
+  auth,
 });
 
 const mapDispatchToProps = dispatch => ({
   signIn: () => dispatch(signIn()),
-  signOut: () => dispatch(signOut())
+  signOut: () => dispatch(signOut()),
 });
 
 export default connect(

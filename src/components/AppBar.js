@@ -1,6 +1,6 @@
-import React from "react";
-import { Box, Button, Heading } from "grommet";
-import { Login } from "grommet-icons";
+import React from 'react';
+import { Box, Button, Heading } from 'grommet';
+import { Login } from 'grommet-icons';
 
 const Bar = props => (
   <Box
@@ -9,9 +9,9 @@ const Bar = props => (
     align="center"
     justify="between"
     background="brand"
-    pad={{ left: "medium", right: "small", vertical: "small" }}
+    pad={{ left: 'medium', right: 'small', vertical: 'small' }}
     elevation="small"
-    style={{ zIndex: "1" }}
+    style={{ zIndex: '1' }}
     {...props}
   />
 );

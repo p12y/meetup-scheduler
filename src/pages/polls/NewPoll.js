@@ -1,15 +1,15 @@
-import React, { useState } from "react";
-import { Box, Button, Form, FormField, Calendar, Grid, Text } from "grommet";
-import styled from "styled-components";
-import { FormNextLink } from "grommet-icons";
-import moment from "moment";
-import DateBox from "components/poll/DateBox";
-import PageTitle from "components/common/PageTitle";
+import React, { useState } from 'react';
+import { Box, Button, Form, FormField, Calendar, Grid, Text } from 'grommet';
+import styled from 'styled-components';
+import { FormNextLink } from 'grommet-icons';
+import moment from 'moment';
+import DateBox from 'components/poll/DateBox';
+import PageTitle from 'components/common/PageTitle';
 
 const Container = styled.div`
-  width: 80%;
-  margin: auto;
   margin-bottom: 1rem;
+  margin: auto;
+  width: 80%;
 `;
 
 const FormContainer = styled.div`
@@ -37,13 +37,13 @@ function NewPoll() {
       <Form onSubmit={event => console.log(event)}>
         <PageTitle basis="xlarge" title="New poll" />
         <Grid
-          rows={["auto", "auto"]}
-          columns={["1/2", "1/2"]}
+          rows={['auto', 'auto']}
+          columns={['1/2', '1/2']}
           gap="small"
           areas={[
-            { name: "form", start: [0, 0], end: [0, 0] },
-            { name: "calendar", start: [1, 0], end: [1, 0] },
-            { name: "dates", start: [0, 1], end: [1, 1] }
+            { name: 'form', start: [0, 0], end: [0, 0] },
+            { name: 'calendar', start: [1, 0], end: [1, 0] },
+            { name: 'dates', start: [0, 1], end: [1, 1] },
           ]}
         >
           <Box gridArea="form" align="center" justify="center">
@@ -64,7 +64,7 @@ function NewPoll() {
             </Box>
           </Box>
           <Box gridArea="dates">
-            <Text>{dates.length ? "Selected dates" : "No dates selected"}</Text>
+            <Text>{dates.length ? 'Selected dates' : 'No dates selected'}</Text>
             <Box direction="row" pad="small" wrap fill align="center">
               {dates.map(date => (
                 <DateBox date={date} key={date} />

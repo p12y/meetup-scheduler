@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { Box, Button, Heading, Layer } from "grommet";
-import * as GrommetIcons from "grommet-icons";
-import LoginButton from "./LoginButton";
+import React, { useState } from 'react';
+import { Box, Button, Heading, Layer } from 'grommet';
+import * as GrommetIcons from 'grommet-icons';
+import LoginButton from './LoginButton';
 
-const providers = ["Facebook", "Google", "Twitter", "Mail"];
+const providers = ['Facebook', 'Google', 'Twitter', 'Mail'];
 
 function LoginLayer() {
   const [open, setOpen] = useState(false);
@@ -40,7 +40,7 @@ function LoginLayer() {
                 key={provider}
                 onClick={console.log}
                 icon={React.createElement(GrommetIcons[provider], {
-                  color: "plain"
+                  color: 'plain',
                 })}
               />
             ))}

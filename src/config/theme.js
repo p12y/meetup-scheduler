@@ -4,8 +4,8 @@ export default {
       // Add brand color
     },
     font: {
-      family: "Roboto",
-      size: "1rem"
-    }
-  }
+      family: 'Roboto',
+      size: '1rem',
+    },
+  },
 };

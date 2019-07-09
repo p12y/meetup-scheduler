@@ -1,15 +1,15 @@
-import React from "react";
-import styled from "styled-components";
-import PageTitle from "components/common/PageTitle";
-import { Info, Location } from "grommet-icons";
-import { Text, Box } from "grommet";
-import DateBox from "components/poll/DateBox";
-import LoginLayer from "components/common/LoginLayer";
+import React from 'react';
+import styled from 'styled-components';
+import PageTitle from 'components/common/PageTitle';
+import { Info, Location } from 'grommet-icons';
+import { Text, Box } from 'grommet';
+import DateBox from 'components/poll/DateBox';
+import LoginLayer from 'components/common/LoginLayer';
 
 const Container = styled.div`
-  width: 80%;
-  margin: auto;
   margin-bottom: 1rem;
+  margin: auto;
+  width: 80%;
 `;
 
 const IconContainer = styled.span`

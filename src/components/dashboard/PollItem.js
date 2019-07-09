@@ -1,5 +1,5 @@
-import React from "react";
-import { Anchor, Text, Box } from "grommet";
+import React from 'react';
+import { Anchor, Text, Box } from 'grommet';
 
 function PollItem({ name, numParticipants }) {
   return (
