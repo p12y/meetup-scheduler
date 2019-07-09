@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Box, Button, Heading } from 'grommet';
 import { Login } from 'grommet-icons';
+import LoginLayerContext from 'context/LoginLayerContext';
 
 const Bar = props => (
   <Box
@@ -17,12 +18,14 @@ const Bar = props => (
 );
 
 function AppBar() {
+  const loginLayerContext = useContext(LoginLayerContext);
+
   return (
     <Bar>
       <Heading level="4" margin="none">
         App name
       </Heading>
-      <Button icon={<Login />} onClick={() => {}} />
+      <Button icon={<Login />} onClick={loginLayerContext.toggle} />
     </Bar>
   );
 }

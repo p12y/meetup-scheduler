@@ -6,18 +6,21 @@ import AppBar from 'components/AppBar';
 import Dashboard from 'pages/Dashboard';
 import NewPoll from 'pages/polls/NewPoll';
 import Poll from 'pages/polls/Poll';
+import AuthContainer from 'containers/AuthContainer';
 import './App.css';
 
 function App(props) {
   return (
-    <Router>
-      <Grommet full theme={theme}>
-        <AppBar />
-        <Route exact path="/" component={Dashboard} />
-        <Route path="/polls/new" component={NewPoll} />
-        <Route path="/p/:id" component={Poll} />
-      </Grommet>
-    </Router>
+    <AuthContainer>
+      <Router>
+        <Grommet full theme={theme}>
+          <AppBar />
+          <Route exact path="/" component={Dashboard} />
+          <Route path="/polls/new" component={NewPoll} />
+          <Route path="/p/:id" component={Poll} />
+        </Grommet>
+      </Router>
+    </AuthContainer>
   );
 }
 
