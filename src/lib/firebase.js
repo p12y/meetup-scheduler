@@ -3,13 +3,13 @@ import 'firebase/auth';
 import 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyANO4lHhlA6MleD4h_ZjnwREjVhWCERbG8',
-  authDomain: 'meetup-scheduler-bc0d4.firebaseapp.com',
-  databaseURL: 'https://meetup-scheduler-bc0d4.firebaseio.com',
-  projectId: 'meetup-scheduler-bc0d4',
-  storageBucket: '',
-  messagingSenderId: '312975602523',
-  appId: '1:312975602523:web:60e95da7119a47f8',
+  apiKey: process.env.REACT_ENV_API_KEY,
+  authDomain: process.env.REACT_ENV_AUTH_DOMAIN,
+  databaseURL: process.env.REACT_ENV_DATABASE_URL,
+  projectId: process.env.REACT_ENV_PROJECT_ID,
+  storageBucket: process.env.REACT_ENV_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_ENV_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_ENV_APP_ID,
 };
 
 if (!firebase.apps.length) {
