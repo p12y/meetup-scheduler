@@ -1,7 +1,8 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Box, Button, Heading } from 'grommet';
 import { Login } from 'grommet-icons';
-import LoginLayerContext from 'context/LoginLayerContext';
+import { useDispatch } from 'react-redux';
+import { openLoginLayer } from 'actions/auth';
 
 const Bar = props => (
   <Box
@@ -18,14 +19,14 @@ const Bar = props => (
 );
 
 function AppBar() {
-  const loginLayerContext = useContext(LoginLayerContext);
+  const dispatch = useDispatch();
 
   return (
     <Bar>
       <Heading level="4" margin="none">
         App name
       </Heading>
-      <Button icon={<Login />} onClick={loginLayerContext.toggle} />
+      <Button icon={<Login />} onClick={() => { dispatch(openLoginLayer()) }} />
     </Bar>
   );
 }

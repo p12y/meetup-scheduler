@@ -1,30 +1,33 @@
-import React, { useContext } from 'react';
+import React, { useCallback } from 'react';
 import { Box, Button, Heading, Layer } from 'grommet';
 import * as GrommetIcons from 'grommet-icons';
+import { useSelector, useDispatch } from 'react-redux';
 import LoginButton from './LoginButton';
-import LoginLayerContext from 'context/LoginLayerContext';
+import { closeLoginLayer, signIn } from 'actions/auth';
 
 const providers = ['Facebook', 'Google', 'Twitter', 'Mail'];
 
 function LoginLayer() {
-  const loginLayerContext = useContext(LoginLayerContext);
+  const open = useSelector(state => state.auth.loginLayerOpen);
+  const dispatch = useDispatch();
+  const onClose = useCallback(() => dispatch(closeLoginLayer()), [dispatch]);
 
   return (
     <Box fill align="center" justify="center">
-      {loginLayerContext.open && (
+      {open && (
         <Layer
           position="right"
           full="vertical"
           modal
-          onClickOutside={loginLayerContext.toggle}
-          onEsc={loginLayerContext.toggle}
+          onClickOutside={onClose}
+          onEsc={onClose}
         >
           <Box
             fill="vertical"
             overflow="auto"
             width="medium"
             pad="medium"
-            onSubmit={loginLayerContext.toggle}
+            onSubmit={onClose}
           >
             <Box flex={false} direction="row" justify="between">
               <Heading level={3} margin="none">
@@ -32,14 +35,14 @@ function LoginLayer() {
               </Heading>
               <Button
                 icon={<GrommetIcons.Close />}
-                onClick={loginLayerContext.toggle}
+                onClick={onClose}
               />
             </Box>
             {providers.map(provider => (
               <LoginButton
                 provider={provider}
                 key={provider}
-                onClick={console.log}
+                onClick={() => dispatch(signIn())}
                 icon={React.createElement(GrommetIcons[provider], {
                   color: 'plain',
                 })}
@@ -48,7 +51,7 @@ function LoginLayer() {
           </Box>
         </Layer>
       )}
-    </Box>
+    </Box >
   );
 }
 
