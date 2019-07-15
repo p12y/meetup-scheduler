@@ -1,5 +1,3 @@
-import firebase from 'lib/firebase';
-
 const auth = (state = {
   isSignedIn: false,
   loginLayerOpen: false,
@@ -15,22 +13,12 @@ const auth = (state = {
         ...state,
         loginLayerOpen: false,
       };
-    case 'SIGN_IN': {
-      // Sign in using a popup.
-      let user = null;
-      const provider = new firebase.auth.FacebookAuthProvider();
-      firebase.auth().signInWithPopup(provider).then(function (result) {
-        // The signed-in user info.
-        user = result.user;
-        console.log(user)
-      });
-
+    case 'SIGN_IN':
+      console.log(action.payload);
       return {
         ...state,
-        user,
-        isSignedIn: true,
+        isSignedIn: true
       };
-    }
     case 'SIGN_OUT':
       return {
         ...state,

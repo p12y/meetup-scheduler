@@ -3,7 +3,7 @@ import { Box, Button, Heading, Layer } from 'grommet';
 import * as GrommetIcons from 'grommet-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import LoginButton from './LoginButton';
-import { closeLoginLayer, signIn } from 'actions/auth';
+import { closeLoginLayer, signInWithFacebook } from 'actions/auth';
 
 const providers = ['Facebook', 'Google', 'Twitter', 'Mail'];
 
@@ -42,7 +42,7 @@ function LoginLayer() {
               <LoginButton
                 provider={provider}
                 key={provider}
-                onClick={() => dispatch(signIn())}
+                onClick={() => dispatch(signInWithFacebook())}
                 icon={React.createElement(GrommetIcons[provider], {
                   color: 'plain',
                 })}
