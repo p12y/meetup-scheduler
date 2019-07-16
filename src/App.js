@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { Grommet } from 'grommet';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import firebase from 'lib/firebase';
-import { signIn, signOut } from 'actions/auth';
+import { setCurrentUser } from 'actions/auth';
 import theme from 'config/theme';
 import AppBar from 'components/AppBar';
 import Dashboard from 'pages/Dashboard';
@@ -19,9 +19,9 @@ function App(props) {
   useEffect(() => {
     const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
       if (user) {
-        dispatch(signIn(user));
+        dispatch(setCurrentUser(user));
       } else {
-        dispatch(signOut);
+        dispatch(setCurrentUser(null));
       }
       return unregisterAuthObserver();
     });

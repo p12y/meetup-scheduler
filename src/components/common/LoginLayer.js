@@ -3,7 +3,12 @@ import { Box, Button, Heading, Layer } from 'grommet';
 import * as GrommetIcons from 'grommet-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import LoginButton from './LoginButton';
-import { closeLoginLayer, signInWithFacebook } from 'actions/auth';
+import {
+  closeLoginLayer,
+  signInWithFacebook,
+  signInWithTwitter,
+  signInWithGoogle,
+} from 'actions/auth';
 
 const providers = ['Facebook', 'Google', 'Twitter', 'Mail'];
 
@@ -11,6 +16,19 @@ function LoginLayer() {
   const open = useSelector(state => state.auth.loginLayerOpen);
   const dispatch = useDispatch();
   const onClose = useCallback(() => dispatch(closeLoginLayer()), [dispatch]);
+  const signIn = useCallback(
+    provider => {
+      return () => {
+        const actions = {
+          Facebook: signInWithFacebook,
+          Google: signInWithGoogle,
+          Twitter: signInWithTwitter,
+        };
+        dispatch(actions[provider]());
+      };
+    },
+    [dispatch]
+  );
 
   return (
     <Box fill align="center" justify="center">
@@ -33,16 +51,13 @@ function LoginLayer() {
               <Heading level={3} margin="none">
                 Sign in to vote!
               </Heading>
-              <Button
-                icon={<GrommetIcons.Close />}
-                onClick={onClose}
-              />
+              <Button icon={<GrommetIcons.Close />} onClick={onClose} />
             </Box>
             {providers.map(provider => (
               <LoginButton
                 provider={provider}
                 key={provider}
-                onClick={() => dispatch(signInWithFacebook())}
+                onClick={signIn(provider)}
                 icon={React.createElement(GrommetIcons[provider], {
                   color: 'plain',
                 })}
@@ -51,7 +66,7 @@ function LoginLayer() {
           </Box>
         </Layer>
       )}
-    </Box >
+    </Box>
   );
 }
 

@@ -1,6 +1,6 @@
 const auth = (
   state = {
-    isSignedIn: false,
+    currentUser: null,
     loginLayerOpen: false,
   },
   action
@@ -16,15 +16,11 @@ const auth = (
         ...state,
         loginLayerOpen: false,
       };
-    case 'SIGN_IN':
+    case 'SET_CURRENT_USER':
       return {
         ...state,
-        currentUser: action.user,
-      };
-    case 'SIGN_OUT':
-      return {
-        ...state,
-        currentUser: null,
+        loginLayerOpen: action.currentUser ? false : state.loginLayerOpen,
+        currentUser: action.currentUser,
       };
     default:
       return state;
