@@ -1,7 +1,10 @@
-const auth = (state = {
-  isSignedIn: false,
-  loginLayerOpen: false,
-}, action) => {
+const auth = (
+  state = {
+    isSignedIn: false,
+    loginLayerOpen: false,
+  },
+  action
+) => {
   switch (action.type) {
     case 'OPEN_LOGIN_LAYER':
       return {
@@ -14,15 +17,14 @@ const auth = (state = {
         loginLayerOpen: false,
       };
     case 'SIGN_IN':
-      console.log(action.payload);
       return {
         ...state,
-        isSignedIn: true
+        currentUser: action.user,
       };
     case 'SIGN_OUT':
       return {
         ...state,
-        isSignedIn: false,
+        currentUser: null,
       };
     default:
       return state;

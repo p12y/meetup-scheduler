@@ -2,7 +2,7 @@ import firebase from 'lib/firebase';
 
 export const signIn = user => ({
   type: 'SIGN_IN',
-  payload: user
+  payload: user,
 });
 
 export const signOut = () => ({
