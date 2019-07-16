@@ -9,7 +9,7 @@ import AppBar from 'components/AppBar';
 import Dashboard from 'pages/Dashboard';
 import NewPoll from 'pages/polls/NewPoll';
 import Poll from 'pages/polls/Poll';
-import LoginLayer from 'components/common/LoginLayer';
+import LoginLayer from 'components/login-layer/LoginLayer';
 
 import './App.css';
 

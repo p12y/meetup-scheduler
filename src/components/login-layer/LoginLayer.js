@@ -2,13 +2,14 @@ import React, { useCallback } from 'react';
 import { Box, Button, Heading, Layer } from 'grommet';
 import * as GrommetIcons from 'grommet-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import LoginButton from './LoginButton';
+import LoginButton from 'components/common/LoginButton';
 import {
   closeLoginLayer,
   signInWithFacebook,
   signInWithTwitter,
   signInWithGoogle,
 } from 'actions/auth';
+import EmailSignInForm from './EmailSignInForm';
 
 const providers = ['Facebook', 'Google', 'Twitter', 'Mail'];
 
@@ -49,11 +50,12 @@ function LoginLayer() {
           >
             <Box flex={false} direction="row" justify="between">
               <Heading level={3} margin="none">
-                Sign in to vote!
+                Sign in to continue!
               </Heading>
               <Button icon={<GrommetIcons.Close />} onClick={onClose} />
             </Box>
-            {providers.map(provider => (
+            <EmailSignInForm />
+            {/* {providers.map(provider => (
               <LoginButton
                 provider={provider}
                 key={provider}
@@ -62,7 +64,7 @@ function LoginLayer() {
                   color: 'plain',
                 })}
               />
-            ))}
+            ))} */}
           </Box>
         </Layer>
       )}
