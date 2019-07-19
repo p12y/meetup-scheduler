@@ -99,7 +99,7 @@ function DateBox({ date, withVotes, top }) {
 }
 
 DateBox.propTypes = {
-  date: PropTypes.object.isRequired,
+  date: PropTypes.string.isRequired,
   withVotes: PropTypes.bool,
   top: PropTypes.bool,
 };
