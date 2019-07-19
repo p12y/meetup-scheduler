@@ -11,8 +11,6 @@ import NewPoll from 'pages/polls/NewPoll';
 import Poll from 'pages/polls/Poll';
 import LoginLayer from 'components/common/LoginLayer';
 
-import './App.css';
-
 function App(props) {
   const dispatch = useDispatch();
 
