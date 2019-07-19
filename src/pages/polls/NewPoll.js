@@ -3,8 +3,11 @@ import { Box, Button, Form, FormField, Calendar, Grid, Text } from 'grommet';
 import styled from 'styled-components';
 import { FormNextLink } from 'grommet-icons';
 import moment from 'moment';
+import { useSelector, useDispatch } from 'react-redux';
+import { withRouter } from "react-router";
 import DateBox from 'components/poll/DateBox';
 import PageTitle from 'components/common/PageTitle';
+import { createPoll } from 'actions/polls';
 
 const Container = styled.div`
   margin-bottom: 1rem;
@@ -16,8 +19,10 @@ const FormContainer = styled.div`
   width: 100%;
 `;
 
-function NewPoll() {
+function NewPoll({ history }) {
+  const dispatch = useDispatch();
   const [dates, setDates] = useState([]);
+  const currentUser = useSelector(state => state.auth.currentUser);
 
   function setSortedDates(dates) {
     const sortedDates = [...dates].sort((a, b) => moment(a).diff(moment(b)));
@@ -32,10 +37,22 @@ function NewPoll() {
     }
   }
 
+  const handleSubmit = async (event) => {
+    const form = event.value;
+    dispatch(createPoll({
+      history,
+      dates,
+      createdBy: currentUser.uid,
+      name: form.name,
+      location: form.location,
+      description: form.description,
+    }));
+  };
+
   return (
     <Container>
       <PageTitle title="New poll" />
-      <Form onSubmit={event => console.log(event)}>
+      <Form onSubmit={handleSubmit}>
         <Grid
           rows={['auto', 'auto']}
           columns={['1/2', '1/2']}
@@ -86,4 +103,4 @@ function NewPoll() {
   );
 }
 
-export default NewPoll;
+export default withRouter(NewPoll);
