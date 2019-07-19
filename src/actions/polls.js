@@ -1,4 +1,5 @@
 import firebase from 'lib/firebase';
+import { error, success } from 'react-toastify-redux';
 
 export const createPoll = ({
   dates,
@@ -19,9 +20,9 @@ export const createPoll = ({
       numParticipants: 0,
     });
     history.push(`/plans/${docRef.id}`);
-    dispatch({ type: 'CREATE_POLL_SUCCESS', createdPollID: docRef.id });
-  } catch (error) {
-    console.error(error);
-    dispatch({ type: 'CREATE_POLL_FAILURE' });
+    dispatch(success('Poll created!'));
+  } catch (err) {
+    console.error(err);
+    dispatch(error("Poll couldn't be created."));
   }
 };

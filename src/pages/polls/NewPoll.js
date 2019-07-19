@@ -31,7 +31,7 @@ function NewPoll({ history }) {
 
   function selectDate(selectedDate) {
     if (dates.find(date => date === selectedDate)) {
-      setSortedDates(dates.filter(date => date !== selectedDate));
+      setDates(dates.filter(date => date !== selectedDate));
     } else {
       setSortedDates(dates.concat(selectedDate));
     }

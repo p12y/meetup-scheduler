@@ -4,6 +4,7 @@ import { Grommet } from 'grommet';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import firebase from 'lib/firebase';
 import { setCurrentUser } from 'actions/auth';
+import { ToastContainer } from 'react-toastify-redux';
 import theme from 'config/theme';
 import AppBar from 'components/AppBar';
 import Dashboard from 'pages/Dashboard';
@@ -11,11 +12,13 @@ import NewPoll from 'pages/polls/NewPoll';
 import Poll from 'pages/polls/Poll';
 import LoginLayer from 'components/common/LoginLayer';
 
-function App(props) {
+import 'react-toastify/dist/ReactToastify.css';
+
+function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
+    const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         dispatch(setCurrentUser(user));
       } else {
@@ -29,6 +32,14 @@ function App(props) {
     <>
       <Router>
         <Grommet full theme={theme}>
+          <ToastContainer
+            position="bottom-right"
+            newestOnTop
+            closeOnClick
+            pauseOnVisibilityChange
+            draggable
+            pauseOnHover
+          />
           <AppBar />
           <Route exact path="/" component={Dashboard} />
           <Route path="/polls/new" component={NewPoll} />
