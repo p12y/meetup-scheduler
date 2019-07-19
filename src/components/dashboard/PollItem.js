@@ -1,5 +1,6 @@
 import React from 'react';
 import { Anchor, Text, Box } from 'grommet';
+import PropTypes from 'prop-types';
 
 function PollItem({ name, numParticipants }) {
   return (
@@ -23,5 +24,10 @@ function PollItem({ name, numParticipants }) {
     </Box>
   );
 }
+
+PollItem.propTypes = {
+  name: PropTypes.string.isRequired,
+  numParticipants: PropTypes.number.isRequired,
+};
 
 export default PollItem;

@@ -3,6 +3,7 @@ import { Box, Text, Anchor } from 'grommet';
 import moment from 'moment';
 import styled from 'styled-components';
 import { Like, Dislike, Star } from 'grommet-icons';
+import PropTypes from 'prop-types';
 
 const StarContainer = styled.div`
   padding: 0.2em;
@@ -96,5 +97,11 @@ function DateBox({ date, withVotes, top }) {
     </Container>
   );
 }
+
+DateBox.propTypes = {
+  date: PropTypes.object.isRequired,
+  withVotes: PropTypes.bool,
+  top: PropTypes.bool,
+};
 
 export default DateBox;
