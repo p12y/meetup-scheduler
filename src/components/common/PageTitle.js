@@ -1,14 +1,13 @@
 import React from 'react';
 import { Box, Heading } from 'grommet';
 
-function PageTitle({ title, basis, children }) {
+function PageTitle({ title, size = "medium" }) {
   return (
     <Box justify="center" direction="row">
-      <Box direction="row" align="center" justify="between" basis={basis}>
-        <Heading size="small" color="dark-2">
+      <Box direction="row" align="center" justify="center" basis="full">
+        <Heading size={size} color="dark-2">
           {title}
         </Heading>
-        {children}
       </Box>
     </Box>
   );

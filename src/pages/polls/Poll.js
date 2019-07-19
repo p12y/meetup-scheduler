@@ -23,7 +23,7 @@ function Poll() {
   return (
     <Container>
       <Box pad="small">
-        <PageTitle basis="xlarge" title="June meetup" />
+        <PageTitle size="small" title="June meetup" />
         <FlexText as="p">
           <IconContainer>
             <Info />

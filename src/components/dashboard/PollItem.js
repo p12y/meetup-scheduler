@@ -3,12 +3,15 @@ import { Anchor, Text, Box } from 'grommet';
 
 function PollItem({ name, numParticipants }) {
   return (
-    <Box justify="center" pad="small" direction="row">
+    <Box justify="center" pad={{
+      "top": "medium",
+
+    }} direction="row">
       <Box
         direction="row"
         justify="between"
         round="medium"
-        basis="2/3"
+        basis="full"
         pad="medium"
         background="light-2"
       >

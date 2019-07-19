@@ -34,8 +34,8 @@ function NewPoll() {
 
   return (
     <Container>
+      <PageTitle title="New poll" />
       <Form onSubmit={event => console.log(event)}>
-        <PageTitle basis="xlarge" title="New poll" />
         <Grid
           rows={['auto', 'auto']}
           columns={['1/2', '1/2']}

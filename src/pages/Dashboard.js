@@ -2,6 +2,7 @@ import React from 'react';
 import { Button } from 'grommet';
 import { AddCircle } from 'grommet-icons';
 import { Link } from 'react-router-dom';
+import styled from 'styled-components';
 import PollItem from 'components/dashboard/PollItem';
 import PageTitle from 'components/common/PageTitle';
 
@@ -20,21 +21,28 @@ const allPolls = [
   },
 ];
 
+const PollsContainer = styled.div`
+  width: 60%;
+  margin: auto;
+  text-align: right;
+`;
+
 function Dashboard() {
   return (
     <>
-      <PageTitle title="Your polls" basis="2/3">
+      <PageTitle title="Your polls" />
+      <PollsContainer>
         <Link to="/polls/new">
-          <Button primary icon={<AddCircle />} label="New poll" />
+          <Button primary icon={<AddCircle />} label="New poll" alignSelf="end" />
         </Link>
-      </PageTitle>
-      {allPolls.map(poll => (
-        <PollItem
-          key={poll.name}
-          name={poll.name}
-          numParticipants={poll.numParticipants}
-        />
-      ))}
+        {allPolls.map(poll => (
+          <PollItem
+            key={poll.name}
+            name={poll.name}
+            numParticipants={poll.numParticipants}
+          />
+        ))}
+      </PollsContainer>
     </>
   );
 }
