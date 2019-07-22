@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'grommet';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 
 const SignInButtonContainer = styled.div`
   margin-top: 1rem;
@@ -22,5 +23,11 @@ function LoginButton({ icon, onClick, provider }) {
     </SignInButtonContainer>
   );
 }
+
+LoginButton.propTypes = {
+  icon: PropTypes.element.isRequired,
+  onClick: PropTypes.func.isRequired,
+  provider: PropTypes.string.isRequired,
+};
 
 export default LoginButton;

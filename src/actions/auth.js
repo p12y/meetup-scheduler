@@ -30,7 +30,7 @@ async function signInWithPopup({ providerName, scopes = [] }) {
   }
 }
 
-export const signInWithFacebook = () => async dispatch => {
+export const signInWithFacebook = () => async (dispatch) => {
   const action = await signInWithPopup({
     providerName: 'Facebook',
   });
@@ -39,7 +39,7 @@ export const signInWithFacebook = () => async dispatch => {
   }
 };
 
-export const signInWithGoogle = () => async dispatch => {
+export const signInWithGoogle = () => async (dispatch) => {
   const action = await signInWithPopup({
     providerName: 'Google',
     scopes: ['profile'],
@@ -49,7 +49,7 @@ export const signInWithGoogle = () => async dispatch => {
   }
 };
 
-export const signInWithTwitter = () => async dispatch => {
+export const signInWithTwitter = () => async (dispatch) => {
   const action = await signInWithPopup({
     providerName: 'Twitter',
   });
@@ -58,7 +58,7 @@ export const signInWithTwitter = () => async dispatch => {
   }
 };
 
-export const signOut = () => async dispatch => {
+export const signOut = () => async (dispatch) => {
   try {
     await firebase.auth().signOut();
     dispatch(setCurrentUser(null));
