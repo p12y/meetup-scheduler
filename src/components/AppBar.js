@@ -56,7 +56,7 @@ function AppBar() {
         return (
           <ProfileImageButton onClick={() => dispatch(signOut())}>
             <ImageContainer>
-              <ProfileImage src={photoURL} objectFit="contain" />
+              <ProfileImage src={photoURL} />
             </ImageContainer>
           </ProfileImageButton>
         );
