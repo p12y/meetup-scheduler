@@ -1,7 +1,9 @@
 import React, { useState, useCallback } from 'react';
 import { FormField, TextInput, Button, Heading } from 'grommet';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import FormHeading from './FormHeading';
+import { cancelMailSignIn } from 'actions/auth';
 
 const ButtonGroup = styled.div`
   text-align: right;
@@ -52,11 +54,12 @@ function renderSignInForm() {
 }
 
 function EmailSignInForm() {
+  const dispatch = useDispatch();
   const [formStep, setFormStep] = useState('check-email');
   const renderActionButtons = useCallback(() => {
     return (
       <ButtonGroup>
-        <Button margin="small" label="Cancel" onClick={() => {}} />
+        <Button margin="small" label="Cancel" onClick={() => { dispatch(cancelMailSignIn()) }} />
         <Button
           label="Next"
           primary
@@ -66,7 +69,7 @@ function EmailSignInForm() {
         />
       </ButtonGroup>
     );
-  }, []);
+  }, [dispatch]);
 
   const renderForm = useCallback(() => {
     switch (formStep) {

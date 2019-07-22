@@ -58,6 +58,14 @@ export const signInWithTwitter = () => async (dispatch) => {
   }
 };
 
+export const signInWithMail = () => ({
+  type: 'SIGN_IN_WITH_MAIL',
+});
+
+export const cancelMailSignIn = () => ({
+  type: 'CANCEL_MAIL_SIGN_IN',
+});
+
 export const signOut = () => async (dispatch) => {
   try {
     await firebase.auth().signOut();
@@ -66,3 +74,4 @@ export const signOut = () => async (dispatch) => {
     console.error(error);
   }
 };
+

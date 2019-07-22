@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Box, Button, Heading, Layer } from 'grommet';
 import * as GrommetIcons from 'grommet-icons';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,13 +8,17 @@ import {
   signInWithFacebook,
   signInWithTwitter,
   signInWithGoogle,
+  signInWithMail,
 } from 'actions/auth';
 import EmailSignInForm from './EmailSignInForm';
 
 const providers = ['Facebook', 'Google', 'Twitter', 'Mail'];
 
+// initial, check-email, create-email, password
+
 function LoginLayer() {
   const open = useSelector(state => state.auth.loginLayerOpen);
+  const formState = useSelector(state => state.auth.formState);
   const dispatch = useDispatch();
   const onClose = useCallback(() => dispatch(closeLoginLayer()), [dispatch]);
   const signIn = useCallback(
@@ -24,6 +28,7 @@ function LoginLayer() {
           Facebook: signInWithFacebook,
           Google: signInWithGoogle,
           Twitter: signInWithTwitter,
+          Mail: signInWithMail,
         };
         dispatch(actions[provider]());
       };
@@ -54,17 +59,21 @@ function LoginLayer() {
               </Heading>
               <Button icon={<GrommetIcons.Close />} onClick={onClose} />
             </Box>
-            <EmailSignInForm />
-            {/* {providers.map(provider => (
-              <LoginButton
-                provider={provider}
-                key={provider}
-                onClick={signIn(provider)}
-                icon={React.createElement(GrommetIcons[provider], {
-                  color: 'plain',
-                })}
-              />
-            ))} */}
+            <>
+              {formState === 'initial' ?
+                <>
+                  {providers.map(provider => (
+                    <LoginButton
+                      provider={provider}
+                      key={provider}
+                      onClick={signIn(provider)}
+                      icon={React.createElement(GrommetIcons[provider], {
+                        color: 'plain',
+                      })}
+                    />
+                  ))}
+                </> : <EmailSignInForm />}
+            </>
           </Box>
         </Layer>
       )}

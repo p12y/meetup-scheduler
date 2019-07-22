@@ -2,6 +2,7 @@ const auth = (
   state = {
     currentUser: null,
     loginLayerOpen: false,
+    formState: 'initial',
   },
   action
 ) => {
@@ -15,12 +16,23 @@ const auth = (
       return {
         ...state,
         loginLayerOpen: false,
+        formState: 'initial',
       };
     case 'SET_CURRENT_USER':
       return {
         ...state,
         loginLayerOpen: action.currentUser ? false : state.loginLayerOpen,
         currentUser: action.currentUser,
+      };
+    case 'SIGN_IN_WITH_MAIL':
+      return {
+        ...state,
+        formState: 'email',
+      };
+    case 'CANCEL_MAIL_SIGN_IN':
+      return {
+        ...state,
+        formState: 'initial',
       };
     default:
       return state;
