@@ -79,9 +79,9 @@ export const checkEmailExists = email => async (dispatch) => {
     const getUserByEmail = firebase.functions().httpsCallable('getUserByEmail');
     const result = await getUserByEmail({ email });
     if (result.data) {
-      let { email, provider } = result.data;
-      provider = providers.getProviderNameById(provider);
-      if (provider) {
+      let { provider } = result.data;
+      if (provider !== 'password') {
+        provider = providers.getProviderNameById(result.data.provider);
         dispatch(emailInUseByProvider(provider));
       } else {
         dispatch(emailUserExists());
@@ -101,12 +101,26 @@ export const emailUserExists = provider => ({
   type: 'EMAIL_USER_EXISTS',
 });
 
+export const signInWithEmailAndPasswordFailure = ({ emailError, passwordError }) => ({
+  type: 'SIGN_IN_WITH_EMAIL_AND_PASSWORD_FAILURE',
+  emailError,
+  passwordError,
+});
+
 export const signInWithEmailAndPassword = ({ email, password }) => async (dispatch) => {
   try {
     const result = await firebase.auth().signInWithEmailAndPassword(email, password);
+    dispatch(resetLoginLayer());
     dispatch(setCurrentUser(result.user));
   } catch (error) {
-    console.error(error);
+    const emailError = {
+      'auth/invalid-email': 'That email address is not valid',
+      'auth/user-not-found': "That email address doesn't match an existing account",
+    }[error.code];
+    const passwordError = {
+      'auth/wrong-password': "The email and password you entered don't match",
+    }[error.code];
+    dispatch(signInWithEmailAndPasswordFailure({ emailError, passwordError }));
   }
 };
 

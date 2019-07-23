@@ -30,9 +30,9 @@ function getHeading(formStep) {
   return headings[formStep];
 }
 
-function EmailInput({ value, name, onChange }) {
+function EmailInput({ value, name, onChange, error }) {
   return (
-    <FormField label="Email">
+    <FormField label="Email" error={error}>
       <TextInput value={value} name={name} onChange={onChange} />
     </FormField>
   );
@@ -102,6 +102,9 @@ function EmailSignInForm() {
   });
   const formState = useSelector(state => state.auth.formState);
   const existingEmailProvider = useSelector(state => state.auth.existingEmailProvider);
+  const emailError = useSelector(state => state.auth.emailError);
+  const passwordError = useSelector(state => state.auth.passwordError);
+
 
   const handleInput = (e) => {
     setEmailForm({ ...emailForm, [e.target.name]: e.target.value });
@@ -134,9 +137,14 @@ function EmailSignInForm() {
           </>
         ),
         'sign-in-with-email': <>
-          <EmailInput value={emailForm.email} name="email" onChange={handleInput} />
-          <FormField label="Password">
-            <TextInput type="password" value={emailForm.password} name="password" onChange={handleInput} />
+          <EmailInput value={emailForm.email} name="email" onChange={handleInput} error={emailError} />
+          <FormField label="Password" error={passwordError}>
+            <TextInput
+              type="password"
+              value={emailForm.password}
+              name="password"
+              onChange={handleInput}
+            />
           </FormField>
           <ActionButtons
             cancelAction={() => dispatch(cancelMailSignIn())}
