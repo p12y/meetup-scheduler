@@ -1,4 +1,5 @@
 import firebase from 'lib/firebase';
+import { providers } from 'helpers/authHelper';
 
 export const setCurrentUser = currentUser => ({
   type: 'SET_CURRENT_USER',
@@ -35,6 +36,7 @@ export const signInWithFacebook = () => async (dispatch) => {
     providerName: 'Facebook',
   });
   if (action) {
+    dispatch(resetLoginLayer());
     dispatch(action());
   }
 };
@@ -45,6 +47,7 @@ export const signInWithGoogle = () => async (dispatch) => {
     scopes: ['profile'],
   });
   if (action) {
+    dispatch(resetLoginLayer());
     dispatch(action());
   }
 };
@@ -54,6 +57,7 @@ export const signInWithTwitter = () => async (dispatch) => {
     providerName: 'Twitter',
   });
   if (action) {
+    dispatch(resetLoginLayer());
     dispatch(action());
   }
 };
@@ -64,6 +68,31 @@ export const signInWithMail = () => ({
 
 export const cancelMailSignIn = () => ({
   type: 'CANCEL_MAIL_SIGN_IN',
+});
+
+export const resetLoginLayer = () => ({
+  type: 'RESET_LOGIN_LAYER',
+});
+
+export const checkEmailExists = email => async (dispatch) => {
+  try {
+    const getUserByEmail = firebase.functions().httpsCallable('getUserByEmail');
+    const result = await getUserByEmail({ email });
+    if (result.data) {
+      let { email, provider } = result.data;
+      provider = providers.getProviderNameById(provider);
+      if (provider) {
+        dispatch(emailInUseByProvider(provider));
+      }
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const emailInUseByProvider = provider => ({
+  type: 'EMAIL_IN_USE_BY_PROVIDER',
+  provider
 });
 
 export const signOut = () => async (dispatch) => {

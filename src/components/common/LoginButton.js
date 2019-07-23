@@ -1,7 +1,14 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Button } from 'grommet';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import {
+  signInWithFacebook,
+  signInWithTwitter,
+  signInWithGoogle,
+  signInWithMail,
+} from 'actions/auth';
 
 const SignInButtonContainer = styled.div`
   margin-top: 1rem;
@@ -10,7 +17,23 @@ const SignInButtonContainer = styled.div`
 
 const toTitleCase = str => str.charAt(0).toUpperCase() + str.slice(1);
 
-function LoginButton({ icon, onClick, provider }) {
+function LoginButton({ icon, provider }) {
+  const dispatch = useDispatch();
+  const signIn = useCallback(
+    provider => {
+      return () => {
+        const actions = {
+          Facebook: signInWithFacebook,
+          Google: signInWithGoogle,
+          Twitter: signInWithTwitter,
+          Mail: signInWithMail,
+        };
+        dispatch(actions[provider]());
+      };
+    },
+    [dispatch]
+  );
+
   const providerName = toTitleCase(provider);
   return (
     <SignInButtonContainer>
@@ -18,7 +41,7 @@ function LoginButton({ icon, onClick, provider }) {
         fill="horizontal"
         icon={icon}
         label={`Sign in with ${providerName}`}
-        onClick={() => onClick(provider)}
+        onClick={signIn(provider)}
       />
     </SignInButtonContainer>
   );
@@ -26,7 +49,6 @@ function LoginButton({ icon, onClick, provider }) {
 
 LoginButton.propTypes = {
   icon: PropTypes.element.isRequired,
-  onClick: PropTypes.func.isRequired,
   provider: PropTypes.string.isRequired,
 };
 
