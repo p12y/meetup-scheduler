@@ -4,7 +4,7 @@ import * as GrommetIcons from 'grommet-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import FormHeading from './FormHeading';
-import { cancelMailSignIn, checkEmailExists, signInWithEmailAndPassword } from 'actions/auth';
+import { cancelMailSignIn, checkEmailExists, signInWithEmailAndPassword, clearFormErrors } from 'actions/auth';
 import LoginButton from 'components/common/LoginButton';
 
 /**
@@ -107,8 +107,9 @@ function EmailSignInForm() {
 
 
   const handleInput = (e) => {
+    if (emailError || passwordError) { dispatch(clearFormErrors()); }
     setEmailForm({ ...emailForm, [e.target.name]: e.target.value });
-  }
+  };
 
   return (
     <>
@@ -116,7 +117,7 @@ function EmailSignInForm() {
       {{
         'input-email': (
           <>
-            <EmailInput value={emailForm.email} name="email" onChange={handleInput} />
+            <EmailInput value={emailForm.email} name="email" onChange={handleInput} error={emailError} />
             <ActionButtons
               cancelAction={() => dispatch(cancelMailSignIn())}
               nextAction={() => dispatch(checkEmailExists(emailForm.email))}

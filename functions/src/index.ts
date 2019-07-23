@@ -10,29 +10,24 @@ admin.initializeApp(adminConfig);
 
 interface User {
   email: string;
-  provider?: string;
+  provider: string;
 }
 
 export const getUserByEmail: functions.TriggerAnnotated = functions.https.onCall(
-  async (data: { email: string }): Promise<User | null> => {
+  async (data: { email: string }): Promise<User> => {
     try {
       const userRecord = await admin.auth().getUserByEmail(data.email);
-      if (userRecord) {
-        if (Array.isArray(userRecord.providerData)) {
-          return {
-            email: userRecord.email!,
-            provider: userRecord.providerData[0].providerId!,
-          };
-        } else {
-          return {
-            email: userRecord.email!,
-          };
-        }
-      }
-      return null;
+      return {
+        email: userRecord.email!,
+        provider: userRecord.providerData[0].providerId!,
+      };
     } catch (error) {
-      console.error(error);
-      return null;
+      const errorCodes: { [key: string]: functions.https.FunctionsErrorCode } = {
+        'auth/user-not-found': 'not-found',
+        'auth/invalid-email': 'invalid-argument',
+      };
+      const code: functions.https.FunctionsErrorCode = errorCodes[error.code] || 'unknown';
+      throw new functions.https.HttpsError(code, error.message);
     }
   }
 );

@@ -3,6 +3,7 @@ const auth = (
     currentUser: null,
     loginLayerOpen: false,
     formState: 'sign-in-with-providers',
+    existingEmailProvider: null,
     emailError: '',
     passwordError: '',
   },
@@ -52,14 +53,18 @@ const auth = (
         ...state,
         existingEmailProvider: null,
         formState: 'sign-in-with-providers',
-        emailError: '',
-        passwordError: '',
       };
     case 'SIGN_IN_WITH_EMAIL_AND_PASSWORD_FAILURE':
       return {
         ...state,
         emailError: action.emailError,
         passwordError: action.passwordError,
+      };
+    case 'CLEAR_FORM_ERRORS':
+      return {
+        ...state,
+        emailError: '',
+        passwordError: '',
       };
     default:
       return state;

@@ -24,7 +24,7 @@ function App() {
       } else {
         dispatch(setCurrentUser(null));
       }
-      return unregisterAuthObserver();
+      return () => unregisterAuthObserver();
     });
   }, [dispatch]);
 

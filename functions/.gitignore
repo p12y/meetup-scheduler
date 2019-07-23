@@ -7,3 +7,4 @@ typings/
 
 node_modules/
 service-account-file.json
+firebase-debug.log
