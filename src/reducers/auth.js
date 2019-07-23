@@ -66,6 +66,11 @@ const auth = (
         emailError: '',
         passwordError: '',
       };
+    case 'EMAIL_AVAILABLE_TO_CREATE':
+      return {
+        ...state,
+        formState: 'create-email-account',
+      };
     default:
       return state;
   }

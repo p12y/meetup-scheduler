@@ -14,11 +14,6 @@ export const openLoginLayer = () => ({
   type: 'OPEN_LOGIN_LAYER',
 });
 
-export const closeLoginLayer = () => (dispatch) => {
-  dispatch(resetLoginLayer());
-  dispatch({ type: 'CLOSE_LOGIN_LAYER' });
-};
-
 export const signInWithMail = () => ({
   type: 'SIGN_IN_WITH_MAIL',
 });
@@ -26,11 +21,6 @@ export const signInWithMail = () => ({
 export const cancelMailSignIn = () => ({
   type: 'CANCEL_MAIL_SIGN_IN',
 });
-
-export const resetLoginLayer = () => (dispatch) => {
-  dispatch(clearFormErrors());
-  dispatch({ type: 'RESET_LOGIN_LAYER' });
-}
 
 export const clearFormErrors = () => ({
   type: 'CLEAR_FORM_ERRORS',
@@ -41,15 +31,29 @@ export const emailInUseByProvider = provider => ({
   provider
 });
 
-export const emailUserExists = provider => ({
+export const emailUserExists = () => ({
   type: 'EMAIL_USER_EXISTS',
 });
+
+export const emailAvailableToCreate = () => ({
+  type: 'EMAIL_AVAILABLE_TO_CREATE',
+})
 
 export const signInWithEmailAndPasswordFailure = ({ emailError, passwordError }) => ({
   type: 'SIGN_IN_WITH_EMAIL_AND_PASSWORD_FAILURE',
   emailError,
   passwordError,
 });
+
+export const resetLoginLayer = () => (dispatch) => {
+  dispatch(clearFormErrors());
+  dispatch({ type: 'RESET_LOGIN_LAYER' });
+}
+
+export const closeLoginLayer = () => (dispatch) => {
+  dispatch(resetLoginLayer());
+  dispatch({ type: 'CLOSE_LOGIN_LAYER' });
+};
 
 /**
  * Signs the user in with popup for the specified provider
@@ -83,7 +87,7 @@ export const signInWithTwitter = () => (dispatch) => {
 
 export const checkEmailExists = email => async (dispatch) => {
   try {
-    firebase.functions().useFunctionsEmulator('http://localhost:5001');
+    // firebase.functions().useFunctionsEmulator('http://localhost:5001');
     const getUserByEmail = firebase.functions().httpsCallable('getUserByEmail');
     const result = await getUserByEmail({ email });
     let { provider } = result.data;
@@ -98,6 +102,7 @@ export const checkEmailExists = email => async (dispatch) => {
       dispatch(signInWithEmailAndPasswordFailure({ emailError: INVALID_EMAIL_MESSAGE }));
     } else if (error.code === 'not-found') {
       // Create new account
+      dispatch(emailAvailableToCreate());
     } else {
       console.error(error.code);
     }
@@ -119,6 +124,23 @@ export const signInWithEmailAndPassword = ({ email, password }) => (dispatch) =>
       }[error.code];
       dispatch(signInWithEmailAndPasswordFailure({ emailError, passwordError }));
     });
+};
+
+export const createUserWithEmailAndPassword = ({ email, password, displayName }) => async (dispatch) => {
+  try {
+    const result = await new Promise((resolve, reject) => {
+      firebase.auth().createUserWithEmailAndPassword(email, password)
+        .then(user => resolve(user))
+        .catch(error => reject(error));
+    });
+    result.user.updateProfile({
+      displayName,
+    }).catch(err => console.error(err));
+    dispatch(resetLoginLayer());
+  } catch (error) {
+    // Log errors
+    console.error(error)
+  }
 };
 
 export const signOut = () => (dispatch) => {
