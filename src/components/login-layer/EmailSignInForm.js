@@ -4,7 +4,7 @@ import * as GrommetIcons from 'grommet-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import FormHeading from './FormHeading';
-import { cancelMailSignIn, checkEmailExists } from 'actions/auth';
+import { cancelMailSignIn, checkEmailExists, signInWithEmailAndPassword } from 'actions/auth';
 import LoginButton from 'components/common/LoginButton';
 
 /**
@@ -38,18 +38,24 @@ function EmailInput({ value, name, onChange }) {
   );
 }
 
-function ActionButtons({ cancelAction, nextAction }) {
+function ActionButtons({ cancelAction, cancelText, showCancel, nextAction, nextText }) {
   return (
     <ButtonGroup>
-      <Button margin="small" label="Cancel" onClick={cancelAction} />
+      {showCancel && <Button margin="small" label={cancelText} onClick={cancelAction} />}
       <Button
-        label="Next"
+        label={nextText}
         primary
         onClick={nextAction}
       />
     </ButtonGroup>
   );
 }
+
+ActionButtons.defaultProps = {
+  cancelText: 'Cancel',
+  nextText: 'Next',
+  showCancel: true,
+};
 
 function EmailInUseByProviderForm({ provider }) {
   return (
@@ -98,35 +104,8 @@ function EmailSignInForm() {
   const existingEmailProvider = useSelector(state => state.auth.existingEmailProvider);
 
   const handleInput = (e) => {
-    setEmailForm({ [e.target.name]: e.target.value });
+    setEmailForm({ ...emailForm, [e.target.name]: e.target.value });
   }
-
-  // function renderEmailForm() {
-  //   switch ()
-  //   return (
-  //     <>
-  //       <EmailInput value={formState.email} name="email" onChange={handleInput} />
-  //       <ActionButtons
-  //         cancelAction={() => dispatch(cancelMailSignIn())}
-  //         nextAction={() => dispatch(checkEmailExists(formState.email))}
-  //       />
-  //     </>
-  //   );
-  // }
-  // const renderActionButtons = useCallback(() => {
-  //   return (
-  //     <ButtonGroup>
-  //       <Button margin="small" label="Cancel" onClick={() => { dispatch(cancelMailSignIn()) }} />
-  //       <Button
-  //         label="Next"
-  //         primary
-  //         onClick={() => {
-  //           setFormStep('create-account');
-  //         }}
-  //       />
-  //     </ButtonGroup>
-  //   );
-  // }, [dispatch]);
 
   return (
     <>
@@ -154,8 +133,19 @@ function EmailSignInForm() {
             />}
           </>
         ),
+        'sign-in-with-email': <>
+          <EmailInput value={emailForm.email} name="email" onChange={handleInput} />
+          <FormField label="Password">
+            <TextInput type="password" value={emailForm.password} name="password" onChange={handleInput} />
+          </FormField>
+          <ActionButtons
+            cancelAction={() => dispatch(cancelMailSignIn())}
+            nextAction={() => dispatch(signInWithEmailAndPassword({ email: emailForm.email, password: emailForm.password }))}
+            nextText="Sign in"
+            showCancel={false}
+          />
+        </>,
         'create-email-account': null,
-        'sign-in-with-email': null,
       }[formState]}
     </>
   );

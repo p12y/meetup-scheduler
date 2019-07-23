@@ -83,6 +83,8 @@ export const checkEmailExists = email => async (dispatch) => {
       provider = providers.getProviderNameById(provider);
       if (provider) {
         dispatch(emailInUseByProvider(provider));
+      } else {
+        dispatch(emailUserExists());
       }
     }
   } catch (error) {
@@ -94,6 +96,19 @@ export const emailInUseByProvider = provider => ({
   type: 'EMAIL_IN_USE_BY_PROVIDER',
   provider
 });
+
+export const emailUserExists = provider => ({
+  type: 'EMAIL_USER_EXISTS',
+});
+
+export const signInWithEmailAndPassword = ({ email, password }) => async (dispatch) => {
+  try {
+    const result = await firebase.auth().signInWithEmailAndPassword(email, password);
+    dispatch(setCurrentUser(result.user));
+  } catch (error) {
+    console.error(error);
+  }
+};
 
 export const signOut = () => async (dispatch) => {
   try {

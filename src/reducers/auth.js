@@ -40,6 +40,11 @@ const auth = (
         formState: 'sign-in-with-existing-provider',
         existingEmailProvider: action.provider,
       };
+    case 'EMAIL_USER_EXISTS':
+      return {
+        ...state,
+        formState: 'sign-in-with-email',
+      };
     case 'RESET_LOGIN_LAYER':
       return {
         ...state,
