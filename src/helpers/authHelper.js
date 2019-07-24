@@ -23,4 +23,12 @@ class Providers {
   }
 }
 
+export class AuthError extends Error {
+  constructor(code, message) {
+    super();
+    this.code = code;
+    this.message = message;
+  }
+}
+
 export const providers = new Providers();

@@ -6,6 +6,7 @@ const auth = (
     existingEmailProvider: null,
     emailError: '',
     passwordError: '',
+    displayNameError: '',
   },
   action
 ) => {
@@ -59,12 +60,14 @@ const auth = (
         ...state,
         emailError: action.emailError,
         passwordError: action.passwordError,
+        displayNameError: action.displayNameError,
       };
     case 'CLEAR_FORM_ERRORS':
       return {
         ...state,
         emailError: '',
         passwordError: '',
+        displayNameError: '',
       };
     case 'EMAIL_AVAILABLE_TO_CREATE':
       return {
