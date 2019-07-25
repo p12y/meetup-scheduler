@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Text } from 'grommet';
 import * as GrommetIcons from 'grommet-icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -6,7 +6,7 @@ import FormHeading from './FormHeading';
 import {
   checkEmailExists,
   signInWithEmailAndPassword,
-  clearFormErrors,
+  clearFormError,
   createUserWithEmailAndPassword,
 } from 'actions/auth';
 import LoginButton from 'components/common/LoginButton';
@@ -14,6 +14,11 @@ import ActionButtons from './ActionButtons';
 import EmailFormInput from './EmailFormInput';
 import * as formStates from 'constants/emailSignInForm';
 
+/**
+ * 
+ * @param {string} formStep - The current display state of the form
+ * @returns {string} - The correct header for the current state
+ */
 function getHeading(formStep) {
   const headings = {
     [formStates.INPUT_EMAIL]: 'Sign in with email',
@@ -41,10 +46,24 @@ function EmailSignInForm() {
     displayNameError,
   } = useSelector(state => state.auth);
 
+  /* 
+    Create a new map to store which fields contain errors
+    Using useMemo means that we don't create a new map every render
+  */
+  const errorFields = useMemo(() => new Map([
+    ['email', emailError],
+    ['password', passwordError],
+    ['displayName', displayNameError]
+  ]), [emailError, passwordError, displayNameError]);
+
+  const fieldHasErrors = name => errorFields.get(name);
+
   const handleInput = (e) => {
-    if (emailError || passwordError) {
-      dispatch(clearFormErrors());
+    // If the field being changed contains errors, clear the error on change
+    if (fieldHasErrors(e.target.name)) {
+      dispatch(clearFormError(e.target.name));
     }
+    // Update the field's value
     setEmailForm({ ...emailForm, [e.target.name]: e.target.value });
   };
 

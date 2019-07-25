@@ -25,9 +25,24 @@ export const signInWithMail = () => ({
   type: types.SIGN_IN_WITH_MAIL,
 });
 
-export const clearFormErrors = () => ({
-  type: types.CLEAR_FORM_ERRORS,
+export const clearAllFormErrors = () => ({
+  type: types.CLEAR_ALL_FORM_ERRORS,
 });
+
+export const clearFormError = (name) => (dispatch) => {
+  const error = {
+    email: 'emailError',
+    displayName: 'displayNameError',
+    password: 'passwordError',
+  }[name];
+
+  if (error) {
+    dispatch({
+      type: 'CLEAR_FORM_ERROR',
+      error,
+    });
+  }
+}
 
 export const emailInUseByProvider = provider => ({
   type: types.EMAIL_IN_USE_BY_PROVIDER,
@@ -50,12 +65,12 @@ export const signInWithEmailAndPasswordFailure = errors => ({
 });
 
 export const cancelMailSignIn = () => (dispatch) => {
-  dispatch(clearFormErrors());
+  dispatch(clearAllFormErrors());
   dispatch({ type: types.CANCEL_MAIL_SIGN_IN });
 };
 
 export const resetLoginLayer = () => (dispatch) => {
-  dispatch(clearFormErrors());
+  dispatch(clearAllFormErrors());
   dispatch({ type: types.RESET_LOGIN_LAYER });
 };
 

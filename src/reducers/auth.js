@@ -61,16 +61,21 @@ const auth = (
     case types.SIGN_IN_WITH_EMAIL_AND_PASSWORD_FAILURE:
       return {
         ...state,
-        emailError: action.emailError,
-        passwordError: action.passwordError,
-        displayNameError: action.displayNameError,
+        emailError: action.emailError || '',
+        passwordError: action.passwordError || '',
+        displayNameError: action.displayNameError || '',
       };
-    case types.CLEAR_FORM_ERRORS:
+    case types.CLEAR_ALL_FORM_ERRORS:
       return {
         ...state,
         emailError: '',
         passwordError: '',
         displayNameError: '',
+      };
+    case 'CLEAR_FORM_ERROR':
+      return {
+        ...state,
+        [action.error]: '',
       };
     case types.EMAIL_AVAILABLE_TO_CREATE:
       return {
