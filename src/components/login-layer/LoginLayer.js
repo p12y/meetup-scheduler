@@ -2,33 +2,19 @@ import React, { useCallback } from 'react';
 import { Box, Button, Heading, Layer } from 'grommet';
 import * as GrommetIcons from 'grommet-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import LoginButton from './LoginButton';
-import {
-  closeLoginLayer,
-  signInWithFacebook,
-  signInWithTwitter,
-  signInWithGoogle,
-} from 'actions/auth';
+import LoginButton from 'components/common/LoginButton';
+import { closeLoginLayer } from 'actions/auth';
+import EmailSignInForm from './EmailSignInForm';
+import { providers } from 'helpers/authHelper';
+import { SIGN_IN_WITH_PROVIDERS } from 'constants/emailSignInForm';
 
-const providers = ['Facebook', 'Google', 'Twitter', 'Mail'];
+const providerNames = providers.providerNames;
 
 function LoginLayer() {
   const open = useSelector(state => state.auth.loginLayerOpen);
+  const formState = useSelector(state => state.auth.formState);
   const dispatch = useDispatch();
   const onClose = useCallback(() => dispatch(closeLoginLayer()), [dispatch]);
-  const signIn = useCallback(
-    provider => {
-      return () => {
-        const actions = {
-          Facebook: signInWithFacebook,
-          Google: signInWithGoogle,
-          Twitter: signInWithTwitter,
-        };
-        dispatch(actions[provider]());
-      };
-    },
-    [dispatch]
-  );
 
   return (
     <Box fill align="center" justify="center">
@@ -49,20 +35,24 @@ function LoginLayer() {
           >
             <Box flex={false} direction="row" justify="between">
               <Heading level={3} margin="none">
-                Sign in to vote!
+                Sign in to continue!
               </Heading>
               <Button icon={<GrommetIcons.Close />} onClick={onClose} />
             </Box>
-            {providers.map(provider => (
-              <LoginButton
-                provider={provider}
-                key={provider}
-                onClick={signIn(provider)}
-                icon={React.createElement(GrommetIcons[provider], {
-                  color: 'plain',
-                })}
-              />
-            ))}
+            <>
+              {formState === SIGN_IN_WITH_PROVIDERS ?
+                <>
+                  {providerNames.map(provider => (
+                    <LoginButton
+                      provider={provider}
+                      key={provider}
+                      icon={React.createElement(GrommetIcons[provider], {
+                        color: 'plain',
+                      })}
+                    />
+                  ))}
+                </> : <EmailSignInForm />}
+            </>
           </Box>
         </Layer>
       )}

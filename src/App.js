@@ -10,7 +10,7 @@ import AppBar from 'components/AppBar';
 import Dashboard from 'pages/Dashboard';
 import NewPoll from 'pages/polls/NewPoll';
 import Poll from 'pages/polls/Poll';
-import LoginLayer from 'components/common/LoginLayer';
+import LoginLayer from 'components/login-layer/LoginLayer';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -24,7 +24,7 @@ function App() {
       } else {
         dispatch(setCurrentUser(null));
       }
-      return unregisterAuthObserver();
+      return () => unregisterAuthObserver();
     });
   }, [dispatch]);
 
