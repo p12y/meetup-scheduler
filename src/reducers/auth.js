@@ -1,10 +1,11 @@
 import * as types from 'constants/auth';
+import * as formStates from 'constants/emailSignInForm';
 
 const auth = (
   state = {
     currentUser: null,
     loginLayerOpen: false,
-    formState: 'sign-in-with-providers',
+    formState: formStates.SIGN_IN_WITH_PROVIDERS,
     existingEmailProvider: null,
     emailError: '',
     passwordError: '',
@@ -22,7 +23,7 @@ const auth = (
       return {
         ...state,
         loginLayerOpen: false,
-        formState: 'sign-in-with-providers',
+        formState: formStates.SIGN_IN_WITH_PROVIDERS,
       };
     case types.SET_CURRENT_USER:
       return {
@@ -33,29 +34,29 @@ const auth = (
     case types.SIGN_IN_WITH_MAIL:
       return {
         ...state,
-        formState: 'input-email',
+        formState: formStates.INPUT_EMAIL,
       };
     case types.CANCEL_MAIL_SIGN_IN:
       return {
         ...state,
-        formState: 'sign-in-with-providers',
+        formState: formStates.SIGN_IN_WITH_PROVIDERS,
       };
     case types.EMAIL_IN_USE_BY_PROVIDER:
       return {
         ...state,
-        formState: 'sign-in-with-existing-provider',
+        formState: formStates.SIGN_IN_WITH_EXISTING_PROVIDER,
         existingEmailProvider: action.provider,
       };
     case types.EMAIL_USER_EXISTS:
       return {
         ...state,
-        formState: 'sign-in-with-email',
+        formState: formStates.SIGN_IN_WITH_EMAIL,
       };
     case types.RESET_LOGIN_LAYER:
       return {
         ...state,
         existingEmailProvider: null,
-        formState: 'sign-in-with-providers',
+        formState: formStates.SIGN_IN_WITH_PROVIDERS,
       };
     case types.SIGN_IN_WITH_EMAIL_AND_PASSWORD_FAILURE:
       return {
@@ -74,7 +75,7 @@ const auth = (
     case types.EMAIL_AVAILABLE_TO_CREATE:
       return {
         ...state,
-        formState: 'create-email-account',
+        formState: formStates.CREATE_EMAIL_ACCOUNT,
       };
     default:
       return state;

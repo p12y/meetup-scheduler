@@ -6,6 +6,7 @@ import LoginButton from 'components/common/LoginButton';
 import { closeLoginLayer } from 'actions/auth';
 import EmailSignInForm from './EmailSignInForm';
 import { providers } from 'helpers/authHelper';
+import { SIGN_IN_WITH_PROVIDERS } from 'constants/emailSignInForm';
 
 const providerNames = providers.providerNames;
 
@@ -39,7 +40,7 @@ function LoginLayer() {
               <Button icon={<GrommetIcons.Close />} onClick={onClose} />
             </Box>
             <>
-              {formState === 'sign-in-with-providers' ?
+              {formState === SIGN_IN_WITH_PROVIDERS ?
                 <>
                   {providerNames.map(provider => (
                     <LoginButton

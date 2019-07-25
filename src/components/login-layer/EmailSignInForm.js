@@ -1,71 +1,28 @@
 import React, { useState } from 'react';
-import { FormField, TextInput, Button, Text } from 'grommet';
+import { Text } from 'grommet';
 import * as GrommetIcons from 'grommet-icons';
 import { useDispatch, useSelector } from 'react-redux';
-import styled from 'styled-components';
 import FormHeading from './FormHeading';
 import {
-  cancelMailSignIn,
   checkEmailExists,
   signInWithEmailAndPassword,
   clearFormErrors,
   createUserWithEmailAndPassword,
 } from 'actions/auth';
 import LoginButton from 'components/common/LoginButton';
-
-/**
- * Steps
- * sign-in-with-providers
- * input-email
- * sign-in-with-existing-provider
- * create-email-account
- * sign-in-with-email
- */
-
-const ButtonGroup = styled.div`
-  text-align: right;
-`;
+import ActionButtons from './ActionButtons';
+import EmailFormInput from './EmailFormInput';
+import * as formStates from 'constants/emailSignInForm';
 
 function getHeading(formStep) {
   const headings = {
-    'input-email': 'Sign in with email',
-    'sign-in-with-email': 'Sign in',
-    'sign-in-with-existing-provider': 'You already have an account',
-    'create-email-account': 'Create account',
+    [formStates.INPUT_EMAIL]: 'Sign in with email',
+    [formStates.SIGN_IN_WITH_EXISTING_PROVIDER]: 'You already have an account',
+    [formStates.SIGN_IN_WITH_EMAIL]: 'Sign in',
+    [formStates.CREATE_EMAIL_ACCOUNT]: 'Create account',
   };
   return headings[formStep];
 }
-
-function EmailInput({ value, name, onChange, error }) {
-  return (
-    <FormField label="Email" error={error}>
-      <TextInput value={value} name={name} onChange={onChange} />
-    </FormField>
-  );
-}
-
-function ActionButtons({
-  cancelAction,
-  cancelText,
-  showCancel,
-  nextAction,
-  nextText,
-}) {
-  return (
-    <ButtonGroup>
-      {showCancel && (
-        <Button margin="small" label={cancelText} onClick={cancelAction} />
-      )}
-      <Button label={nextText} primary onClick={nextAction} />
-    </ButtonGroup>
-  );
-}
-
-ActionButtons.defaultProps = {
-  cancelText: 'Cancel',
-  nextText: 'Next',
-  showCancel: true,
-};
 
 function EmailSignInForm() {
   const dispatch = useDispatch();
@@ -84,7 +41,7 @@ function EmailSignInForm() {
     displayNameError,
   } = useSelector(state => state.auth);
 
-  const handleInput = e => {
+  const handleInput = (e) => {
     if (emailError || passwordError) {
       dispatch(clearFormErrors());
     }
@@ -96,25 +53,24 @@ function EmailSignInForm() {
       <FormHeading text={getHeading(formState)} />
       {
         {
-          'input-email': (
+          [formStates.INPUT_EMAIL]: (
             <>
-              <EmailInput
+              <EmailFormInput
+                label="Email"
                 value={emailForm.email}
                 name="email"
                 onChange={handleInput}
                 error={emailError}
               />
               <ActionButtons
-                cancelAction={() => dispatch(cancelMailSignIn())}
                 nextAction={() => dispatch(checkEmailExists(emailForm.email))}
               />
             </>
           ),
-          'sign-in-with-existing-provider': (
+          [formStates.SIGN_IN_WITH_EXISTING_PROVIDER]: (
             <>
               <Text>
-                You've already used <Text weight="bold">{emailForm.email}</Text>
-                .
+                You've already used <Text weight="bold">{emailForm.email}</Text>.
               </Text>
               <Text>Sign in with {existingEmailProvider} to continue.</Text>
               {existingEmailProvider && (
@@ -131,24 +87,24 @@ function EmailSignInForm() {
               )}
             </>
           ),
-          'sign-in-with-email': (
+          [formStates.SIGN_IN_WITH_EMAIL]: (
             <>
-              <EmailInput
+              <EmailFormInput
+                label="Email"
                 value={emailForm.email}
                 name="email"
                 onChange={handleInput}
                 error={emailError}
               />
-              <FormField label="Password" error={passwordError}>
-                <TextInput
-                  type="password"
-                  value={emailForm.password}
-                  name="password"
-                  onChange={handleInput}
-                />
-              </FormField>
+              <EmailFormInput
+                label="Password"
+                type="password"
+                value={emailForm.password}
+                name="password"
+                onChange={handleInput}
+                error={passwordError}
+              />
               <ActionButtons
-                cancelAction={() => dispatch(cancelMailSignIn())}
                 nextAction={() =>
                   dispatch(
                     signInWithEmailAndPassword({
@@ -162,31 +118,31 @@ function EmailSignInForm() {
               />
             </>
           ),
-          'create-email-account': (
+          [formStates.CREATE_EMAIL_ACCOUNT]: (
             <>
-              <EmailInput
+              <EmailFormInput
+                label="Email"
                 value={emailForm.email}
                 name="email"
                 onChange={handleInput}
                 error={emailError}
               />
-              <FormField label="First & last name" error={displayNameError}>
-                <TextInput
-                  value={emailForm.displayName}
-                  name="displayName"
-                  onChange={handleInput}
-                />
-              </FormField>
-              <FormField label="Choose password" error={passwordError}>
-                <TextInput
-                  type="password"
-                  value={emailForm.password}
-                  name="password"
-                  onChange={handleInput}
-                />
-              </FormField>
+              <EmailFormInput
+                label="First & last name"
+                value={emailForm.displayName}
+                name="displayName"
+                onChange={handleInput}
+                error={displayNameError}
+              />
+              <EmailFormInput
+                label="Choose password"
+                type="password"
+                value={emailForm.password}
+                name="password"
+                onChange={handleInput}
+                error={passwordError}
+              />
               <ActionButtons
-                cancelAction={() => dispatch(cancelMailSignIn())}
                 nextAction={() =>
                   dispatch(
                     createUserWithEmailAndPassword({
