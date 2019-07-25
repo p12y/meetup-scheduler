@@ -1,3 +1,5 @@
+import * as types from 'constants/auth';
+
 const auth = (
   state = {
     currentUser: null,
@@ -11,65 +13,65 @@ const auth = (
   action
 ) => {
   switch (action.type) {
-    case 'OPEN_LOGIN_LAYER':
+    case types.OPEN_LOGIN_LAYER:
       return {
         ...state,
         loginLayerOpen: true,
       };
-    case 'CLOSE_LOGIN_LAYER':
+    case types.CLOSE_LOGIN_LAYER:
       return {
         ...state,
         loginLayerOpen: false,
         formState: 'sign-in-with-providers',
       };
-    case 'SET_CURRENT_USER':
+    case types.SET_CURRENT_USER:
       return {
         ...state,
         loginLayerOpen: action.currentUser ? false : state.loginLayerOpen,
         currentUser: action.currentUser,
       };
-    case 'SIGN_IN_WITH_MAIL':
+    case types.SIGN_IN_WITH_MAIL:
       return {
         ...state,
         formState: 'input-email',
       };
-    case 'CANCEL_MAIL_SIGN_IN':
+    case types.CANCEL_MAIL_SIGN_IN:
       return {
         ...state,
         formState: 'sign-in-with-providers',
       };
-    case 'EMAIL_IN_USE_BY_PROVIDER':
+    case types.EMAIL_IN_USE_BY_PROVIDER:
       return {
         ...state,
         formState: 'sign-in-with-existing-provider',
         existingEmailProvider: action.provider,
       };
-    case 'EMAIL_USER_EXISTS':
+    case types.EMAIL_USER_EXISTS:
       return {
         ...state,
         formState: 'sign-in-with-email',
       };
-    case 'RESET_LOGIN_LAYER':
+    case types.RESET_LOGIN_LAYER:
       return {
         ...state,
         existingEmailProvider: null,
         formState: 'sign-in-with-providers',
       };
-    case 'SIGN_IN_WITH_EMAIL_AND_PASSWORD_FAILURE':
+    case types.SIGN_IN_WITH_EMAIL_AND_PASSWORD_FAILURE:
       return {
         ...state,
         emailError: action.emailError,
         passwordError: action.passwordError,
         displayNameError: action.displayNameError,
       };
-    case 'CLEAR_FORM_ERRORS':
+    case types.CLEAR_FORM_ERRORS:
       return {
         ...state,
         emailError: '',
         passwordError: '',
         displayNameError: '',
       };
-    case 'EMAIL_AVAILABLE_TO_CREATE':
+    case types.EMAIL_AVAILABLE_TO_CREATE:
       return {
         ...state,
         formState: 'create-email-account',
