@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Text } from 'grommet';
 import * as GrommetIcons from 'grommet-icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,17 +46,13 @@ function EmailSignInForm() {
     displayNameError,
   } = useSelector(state => state.auth);
 
-  /* 
-    Create a new map to store which fields contain errors
-    Using useMemo means that we don't create a new map every render
-  */
-  const errorFields = useMemo(() => new Map([
-    ['email', emailError],
-    ['password', passwordError],
-    ['displayName', displayNameError]
-  ]), [emailError, passwordError, displayNameError]);
+  const errorFields = {
+    email: emailError,
+    password: passwordError,
+    displayName: displayNameError,
+  };
 
-  const fieldHasErrors = name => errorFields.get(name);
+  const fieldHasErrors = name => Boolean(errorFields[name]);
 
   const handleInput = (e) => {
     // If the field being changed contains errors, clear the error on change
