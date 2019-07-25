@@ -15,7 +15,6 @@ function LoginLayer() {
   const dispatch = useDispatch();
   const onClose = useCallback(() => dispatch(closeLoginLayer()), [dispatch]);
 
-
   return (
     <Box fill align="center" justify="center">
       {open && (

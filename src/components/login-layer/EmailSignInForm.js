@@ -29,9 +29,9 @@ const ButtonGroup = styled.div`
 function getHeading(formStep) {
   const headings = {
     'input-email': 'Sign in with email',
+    'sign-in-with-email': 'Sign in',
     'sign-in-with-existing-provider': 'You already have an account',
     'create-email-account': 'Create account',
-    'sign-in': 'Sign in with email',
   };
   return headings[formStep];
 }

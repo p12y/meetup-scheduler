@@ -5,6 +5,7 @@ import { providers, AuthError } from 'helpers/authHelper';
 // firebase.functions().useFunctionsEmulator('http://localhost:5001');
 
 const INVALID_EMAIL_MESSAGE = 'That email address is not valid';
+const EMAIL_IN_USE_MESSAGE = 'That email address is already used by another account';
 const USER_NOT_FOUND_MESSAGE =
   "That email address doesn't match an existing account";
 const WRONG_PASSWORD_MESSAGE = "The email and password you entered don't match";
@@ -23,9 +24,10 @@ export const signInWithMail = () => ({
   type: 'SIGN_IN_WITH_MAIL',
 });
 
-export const cancelMailSignIn = () => ({
-  type: 'CANCEL_MAIL_SIGN_IN',
-});
+export const cancelMailSignIn = () => (dispatch) => {
+  dispatch(clearFormErrors());
+  dispatch({ type: 'CANCEL_MAIL_SIGN_IN' });
+};
 
 export const clearFormErrors = () => ({
   type: 'CLEAR_FORM_ERRORS',
@@ -193,8 +195,11 @@ export const createUserWithEmailAndPassword = ({
         );
         break;
       case 'auth/email-already-in-use':
-        // Sign in existing user
-        // dispatch(emailInUseByProvider(provider));
+        dispatch(
+          signInWithEmailAndPasswordFailure({
+            emailError: EMAIL_IN_USE_MESSAGE,
+          })
+        );
         break;
       case 'auth/invalid-email':
         dispatch(
