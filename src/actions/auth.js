@@ -6,7 +6,8 @@ import * as types from 'constants/auth';
 // firebase.functions().useFunctionsEmulator('http://localhost:5001');
 
 const INVALID_EMAIL_MESSAGE = 'That email address is not valid';
-const EMAIL_IN_USE_MESSAGE = 'That email address is already used by another account';
+const EMAIL_IN_USE_MESSAGE =
+  'That email address is already used by another account';
 const USER_NOT_FOUND_MESSAGE =
   "That email address doesn't match an existing account";
 const WRONG_PASSWORD_MESSAGE = "The email and password you entered don't match";
@@ -29,7 +30,7 @@ export const clearAllFormErrors = () => ({
   type: types.CLEAR_ALL_FORM_ERRORS,
 });
 
-export const clearFormError = (name) => (dispatch) => {
+export const clearFormError = name => dispatch => {
   const error = {
     email: 'emailError',
     displayName: 'displayNameError',
@@ -42,7 +43,7 @@ export const clearFormError = (name) => (dispatch) => {
       error,
     });
   }
-}
+};
 
 export const emailInUseByProvider = provider => ({
   type: types.EMAIL_IN_USE_BY_PROVIDER,
@@ -64,17 +65,17 @@ export const signInWithEmailAndPasswordFailure = errors => ({
   displayNameError: errors.displayNameError,
 });
 
-export const cancelMailSignIn = () => (dispatch) => {
+export const cancelMailSignIn = () => dispatch => {
   dispatch(clearAllFormErrors());
   dispatch({ type: types.CANCEL_MAIL_SIGN_IN });
 };
 
-export const resetLoginLayer = () => (dispatch) => {
+export const resetLoginLayer = () => dispatch => {
   dispatch(clearAllFormErrors());
   dispatch({ type: types.RESET_LOGIN_LAYER });
 };
 
-export const closeLoginLayer = () => (dispatch) => {
+export const closeLoginLayer = () => dispatch => {
   dispatch(resetLoginLayer());
   dispatch({ type: types.CLOSE_LOGIN_LAYER });
 };
@@ -94,11 +95,11 @@ const signInWithPopup = ({ providerName, scopes = [] }) => dispatch => {
     .catch(error => console.error(error));
 };
 
-export const signInWithFacebook = () => (dispatch) => {
+export const signInWithFacebook = () => dispatch => {
   dispatch(signInWithPopup({ providerName: 'Facebook' }));
 };
 
-export const signInWithGoogle = () => (dispatch) => {
+export const signInWithGoogle = () => dispatch => {
   dispatch(
     signInWithPopup({
       providerName: 'Google',
@@ -107,7 +108,7 @@ export const signInWithGoogle = () => (dispatch) => {
   );
 };
 
-export const signInWithTwitter = () => (dispatch) => {
+export const signInWithTwitter = () => dispatch => {
   dispatch(
     signInWithPopup({
       providerName: 'Twitter',
@@ -115,8 +116,16 @@ export const signInWithTwitter = () => (dispatch) => {
   );
 };
 
-export const checkEmailExists = email => async (dispatch) => {
+export const checkEmailExists = email => async dispatch => {
   try {
+    /* 
+      Validate email with simple regex to avoid calling 
+      cloud function with a completely invalid email
+    */
+    if (!email.match(/.+@.+\..+/)) {
+      throw new AuthError('invalid-argument');
+    }
+
     // Get the user by email address
     const getUserByEmail = firebase.functions().httpsCallable('getUserByEmail');
     const result = await getUserByEmail({ email });
