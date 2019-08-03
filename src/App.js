@@ -18,7 +18,7 @@ function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const unregisterAuthObserver = firebase.auth().onAuthStateChanged((user) => {
+    const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
       if (user) {
         dispatch(setCurrentUser(user));
       } else {
@@ -33,7 +33,8 @@ function App() {
       <Router>
         <Grommet full theme={theme}>
           <ToastContainer
-            position="bottom-right"
+            autoClose={2500}
+            position="top-right"
             newestOnTop
             closeOnClick
             pauseOnVisibilityChange

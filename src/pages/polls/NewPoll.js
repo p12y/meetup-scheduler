@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import { FormNextLink } from 'grommet-icons';
 import moment from 'moment';
 import { useSelector, useDispatch } from 'react-redux';
-import { withRouter } from "react-router";
+import { withRouter } from 'react-router';
 import DateBox from 'components/poll/DateBox';
 import PageTitle from 'components/common/PageTitle';
 import { createPoll } from 'actions/polls';
@@ -37,16 +37,18 @@ function NewPoll({ history }) {
     }
   }
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async event => {
     const form = event.value;
-    dispatch(createPoll({
-      history,
-      dates,
-      createdBy: currentUser.uid,
-      name: form.name,
-      location: form.location,
-      description: form.description,
-    }));
+    dispatch(
+      createPoll({
+        history,
+        dates,
+        createdBy: currentUser.uid,
+        name: form.name,
+        location: form.location,
+        description: form.description || '',
+      })
+    );
   };
 
   return (

@@ -1,12 +1,11 @@
 const polls = (state = {}, action) => {
   switch (action.type) {
-    case 'CREATE_POLL_SUCCESS':
+    case 'FETCH_POLL_SUCCESS':
       return {
         ...state,
-        createdPollID: action.createdPollID
+        id: action.id,
+        pollData: action.pollData,
       };
-    case 'CREATE_POLL_FAILURE':
-      return state;
     default:
       return state;
   }

@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import PageTitle from 'components/common/PageTitle';
 import { Info, Location } from 'grommet-icons';
 import { Text, Box } from 'grommet';
+import { useDispatch, useSelector } from 'react-redux';
+import { withRouter } from 'react-router';
+import { fetchPoll } from 'actions/polls';
 import DateBox from 'components/poll/DateBox';
 
 const Container = styled.div`
@@ -19,32 +22,46 @@ const FlexText = styled(Text)`
   display: flex;
 `;
 
-function Poll() {
-  return (
-    <Container>
-      <Box pad="small">
-        <PageTitle size="small" title="June meetup" />
-        <FlexText as="p">
-          <IconContainer>
-            <Info />
-          </IconContainer>
-          June meetup with the lads! Thinking we could go camping.
-        </FlexText>
-        <FlexText as="p">
-          <IconContainer>
-            <Location />
-          </IconContainer>
-          Leicester
-        </FlexText>
-      </Box>
+function Poll(props) {
+  const dispatch = useDispatch();
+  const pollData = useSelector(state => state.polls.pollData);
 
-      <Box direction="row" wrap fill align="center">
-        <DateBox date={new Date()} withVotes />
-        <DateBox date={new Date()} withVotes />
-        <DateBox date={new Date()} withVotes top />
-      </Box>
-    </Container>
+  useEffect(() => {
+    const pollId = props.match.params.id;
+    if (pollId) {
+      dispatch(fetchPoll(props.match.params.id));
+    }
+  }, [dispatch, props.match.params.id]);
+
+  return (
+    <>
+      {pollData && (
+        <Container>
+          <Box pad="small">
+            <PageTitle size="small" title={pollData.name} />
+            <FlexText as="p">
+              <IconContainer>
+                <Info />
+              </IconContainer>
+              {pollData.name}
+            </FlexText>
+            <FlexText as="p">
+              <IconContainer>
+                <Location />
+              </IconContainer>
+              {pollData.location}
+            </FlexText>
+          </Box>
+
+          <Box direction="row" wrap fill align="center">
+            {pollData.pollItems.map(poll => (
+              <DateBox date={poll.date} withVotes />
+            ))}
+          </Box>
+        </Container>
+      )}
+    </>
   );
 }
 
-export default Poll;
+export default withRouter(Poll);
