@@ -1,9 +1,12 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { Box, Text, Anchor } from 'grommet';
 import moment from 'moment';
 import styled from 'styled-components';
 import { Like, Dislike, Star } from 'grommet-icons';
 import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
+import { castVote } from 'actions/polls';
 
 const StarContainer = styled.div`
   padding: 0.2em;
@@ -28,12 +31,36 @@ const Container = styled(Box)`
   position: relative;
 `;
 
-function DateBox({ date, withVotes, top }) {
+function DateBox({ date, withVotes, top, pollId, votes }) {
+  const userId = useSelector(
+    state => state.auth.currentUser && state.auth.currentUser.uid
+  );
+  const dispatch = useDispatch();
   const momentDate = moment(date);
 
   const month = momentDate.format('MMM');
   const dayOfMonth = momentDate.format('D');
   const dayOfWeek = momentDate.format('dddd');
+
+  const currentVote = votes ? votes.find(vote => vote.userId === userId) : null;
+
+  const getButtonBackground = type => {
+    const defaultColor = 'light-3';
+    if (currentVote) {
+      return currentVote.vote === type ? 'accent-1' : defaultColor;
+    }
+    return defaultColor;
+  };
+
+  const voteCounts = votes
+    ? votes.reduce(
+        (lengths, vote) => {
+          vote.vote === 'yes' ? (lengths.yes += 1) : (lengths.no += 1);
+          return lengths;
+        },
+        { yes: 0, no: 0 }
+      )
+    : {};
 
   return (
     <Container
@@ -65,12 +92,15 @@ function DateBox({ date, withVotes, top }) {
             <SelectButton
               fill
               pad="small"
-              background="accent-1"
+              background={getButtonBackground('yes')}
               margin="xsmall"
               round="small"
+              onClick={() => {
+                dispatch(castVote({ date, pollId, vote: 'yes' }));
+              }}
             >
               <Box direction="row" justify="around">
-                <ButtonContent>3</ButtonContent>
+                <ButtonContent>{voteCounts.yes || 0}</ButtonContent>
                 <ButtonContent>
                   <Like />
                 </ButtonContent>
@@ -79,12 +109,15 @@ function DateBox({ date, withVotes, top }) {
             <SelectButton
               fill
               pad="small"
-              background="light-3"
+              background={getButtonBackground('no')}
               margin="xsmall"
               round="small"
+              onClick={() => {
+                dispatch(castVote({ date, pollId, vote: 'no' }));
+              }}
             >
               <Box direction="row" justify="around">
-                <ButtonContent>1</ButtonContent>
+                <ButtonContent>{voteCounts.no || 0}</ButtonContent>
                 <ButtonContent>
                   <Dislike />
                 </ButtonContent>
@@ -102,6 +135,7 @@ DateBox.propTypes = {
   date: PropTypes.string.isRequired,
   withVotes: PropTypes.bool,
   top: PropTypes.bool,
+  votes: PropTypes.array,
 };
 
 export default DateBox;

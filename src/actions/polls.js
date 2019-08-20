@@ -1,7 +1,9 @@
 import firebase from 'lib/firebase';
 import { error, success } from 'react-toastify-redux';
 
-export const fetchPollSuccess = ({ id, pollData }) => ({
+const pollObserver = {};
+
+export const fetchPollSuccess = ({ id, pollData, unsubscribe }) => ({
   type: 'FETCH_POLL_SUCCESS',
   id,
   pollData,
@@ -20,18 +22,13 @@ export const createPoll = ({
       .firestore()
       .collection('polls')
       .add({
-        pollItems: dates.map(date => ({
-          date,
-          votes: {
-            yes: [],
-            no: [],
-          },
-        })),
+        dates: dates.map(date => ({ date, votes: [] })),
         createdBy,
         name,
         location,
         description,
         createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+        votes: [],
         numParticipants: 0,
       });
     history.push(`/p/${docRef.id}`);
@@ -43,19 +40,50 @@ export const createPoll = ({
 };
 
 export const fetchPoll = id => async dispatch => {
-  try {
-    const doc = await firebase
-      .firestore()
-      .collection('polls')
-      .doc(id)
-      .get();
+  const doc = firebase
+    .firestore()
+    .collection('polls')
+    .doc(id);
 
-    if (doc.exists) {
-      dispatch(fetchPollSuccess({ id: doc.id, pollData: doc.data() }));
-    } else {
-      console.log('No such document!');
-    }
+  pollObserver.unsubscribe = doc.onSnapshot(
+    snapshot => {
+      if (snapshot.exists) {
+        dispatch(
+          fetchPollSuccess({
+            id: snapshot.id,
+            pollData: snapshot.data(),
+          })
+        );
+      } else {
+        console.log('No such document!');
+      }
+    },
+    err => console.error(err)
+  );
+};
+
+export const unsubscribePollObserver = () => dispatch => {
+  if (pollObserver.unsubscribe) pollObserver.unsubscribe();
+};
+
+export const castVote = ({ vote, pollId, date }) => async dispatch => {
+  const pollRef = firebase
+    .firestore()
+    .collection('polls')
+    .doc(pollId);
+  const userId = firebase.auth().currentUser.uid;
+
+  try {
+    await firebase.firestore().runTransaction(async t => {
+      const poll = await t.get(pollRef);
+      const dates = poll.data().dates;
+      const dateObj = dates.find(obj => obj.date === date);
+      const votes = dateObj.votes.filter(vote => vote.userId !== userId);
+      const updatedVotes = [...votes, { userId, vote }];
+      dateObj.votes = updatedVotes;
+      t.update(pollRef, { dates });
+    });
   } catch (error) {
-    console.log('Error getting document:', error);
+    console.log('Transaction failure:', error);
   }
 };

@@ -5,7 +5,7 @@ import { Info, Location } from 'grommet-icons';
 import { Text, Box } from 'grommet';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
-import { fetchPoll } from 'actions/polls';
+import { fetchPoll, unsubscribePollObserver } from 'actions/polls';
 import DateBox from 'components/poll/DateBox';
 
 const Container = styled.div`
@@ -25,13 +25,14 @@ const FlexText = styled(Text)`
 function Poll(props) {
   const dispatch = useDispatch();
   const pollData = useSelector(state => state.polls.pollData);
+  const pollId = props.match.params.id;
 
   useEffect(() => {
-    const pollId = props.match.params.id;
     if (pollId) {
-      dispatch(fetchPoll(props.match.params.id));
+      dispatch(fetchPoll(pollId));
+      return () => dispatch(unsubscribePollObserver());
     }
-  }, [dispatch, props.match.params.id]);
+  }, [dispatch, pollId]);
 
   return (
     <>
@@ -54,8 +55,14 @@ function Poll(props) {
           </Box>
 
           <Box direction="row" wrap fill align="center">
-            {pollData.pollItems.map(poll => (
-              <DateBox date={poll.date} withVotes />
+            {pollData.dates.map(dateObj => (
+              <DateBox
+                key={dateObj.date}
+                date={dateObj.date}
+                withVotes
+                pollId={pollId}
+                votes={dateObj.votes}
+              />
             ))}
           </Box>
         </Container>
