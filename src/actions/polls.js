@@ -3,10 +3,11 @@ import { error, success } from 'react-toastify-redux';
 
 const pollObserver = {};
 
-export const fetchPollSuccess = ({ id, pollData, unsubscribe }) => ({
+export const fetchPollSuccess = ({ id, pollData, topDate }) => ({
   type: 'FETCH_POLL_SUCCESS',
   id,
   pollData,
+  topDate,
 });
 
 export const createPoll = ({
@@ -22,7 +23,12 @@ export const createPoll = ({
       .firestore()
       .collection('polls')
       .add({
-        dates: dates.map(date => ({ date, votes: [] })),
+        dates: dates.map(date => ({
+          date,
+          votes: [],
+          yesVoteCount: 0,
+          noVoteCount: 0,
+        })),
         createdBy,
         name,
         location,
@@ -48,8 +54,26 @@ export const fetchPoll = id => async dispatch => {
   pollObserver.unsubscribe = doc.onSnapshot(
     snapshot => {
       if (snapshot.exists) {
+        const pollData = snapshot.data();
+        let topDate = null;
+
+        if (pollData && pollData.dates.length) {
+          const sortedDates = Array.from(pollData.dates).sort(
+            (a, b) => b.yesVoteCount - a.yesVoteCount
+          );
+
+          if (sortedDates.length > 1) {
+            if (sortedDates[0].yesVoteCount > sortedDates[1].yesVoteCount) {
+              topDate = sortedDates[0];
+            }
+          } else if (sortedDates[0].yesVoteCount > 0) {
+            topDate = sortedDates[0];
+          }
+        }
+
         dispatch(
           fetchPollSuccess({
+            topDate,
             id: snapshot.id,
             pollData: snapshot.data(),
           })
@@ -63,7 +87,10 @@ export const fetchPoll = id => async dispatch => {
 };
 
 export const unsubscribePollObserver = () => dispatch => {
-  if (pollObserver.unsubscribe) pollObserver.unsubscribe();
+  if (pollObserver.unsubscribe) {
+    pollObserver.unsubscribe();
+    dispatch({ type: 'UNSUBSCRIBE_POLL' });
+  }
 };
 
 export const castVote = ({ vote, pollId, date }) => async dispatch => {
@@ -71,19 +98,64 @@ export const castVote = ({ vote, pollId, date }) => async dispatch => {
     .firestore()
     .collection('polls')
     .doc(pollId);
-  const userId = firebase.auth().currentUser.uid;
+  const { uid, email, displayName, photoURL } = firebase.auth().currentUser;
 
   try {
     await firebase.firestore().runTransaction(async t => {
       const poll = await t.get(pollRef);
       const dates = poll.data().dates;
       const dateObj = dates.find(obj => obj.date === date);
-      const votes = dateObj.votes.filter(vote => vote.userId !== userId);
-      const updatedVotes = [...votes, { userId, vote }];
+      const votes = dateObj.votes.filter(
+        currentVote => currentVote.user.uid !== uid
+      );
+
+      const updatedVotes = [
+        ...votes,
+        {
+          vote,
+          user: {
+            uid,
+            displayName,
+            email,
+            photoURL,
+          },
+        },
+      ];
+
+      let yesVoteCount = 0;
+      let noVoteCount = 0;
+      for (const currentVote of updatedVotes) {
+        if (currentVote.vote === 'yes') {
+          yesVoteCount += 1;
+        } else {
+          noVoteCount += 1;
+        }
+      }
+
       dateObj.votes = updatedVotes;
+      dateObj.yesVoteCount = yesVoteCount;
+      dateObj.noVoteCount = noVoteCount;
       t.update(pollRef, { dates });
+      dispatch({ type: 'POLL_UPDATED' });
     });
   } catch (error) {
     console.log('Transaction failure:', error);
+    dispatch({ type: 'POLL_UPDATE_ERROR' });
   }
 };
+
+export const setVotes = votes => dispatch => {
+  dispatch(openWhoVotedLayer());
+  dispatch({
+    type: 'SET_VOTES',
+    votes,
+  });
+};
+
+export const openWhoVotedLayer = () => ({
+  type: 'OPEN_WHO_VOTED_LAYER',
+});
+
+export const closeWhoVotedLayer = () => ({
+  type: 'CLOSE_WHO_VOTED_LAYER',
+});

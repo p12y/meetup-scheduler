@@ -4,6 +4,11 @@ import { Login, Logout } from 'grommet-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { openLoginLayer, signOut } from 'actions/auth';
+import {
+  ProfileImageButton,
+  ImageContainer,
+  ProfileImage,
+} from 'styled/ProfileImage';
 
 const Bar = props => (
   <Box
@@ -19,29 +24,6 @@ const Bar = props => (
   />
 );
 
-const ProfileImageButton = styled.div`
-  border-radius: 50%;
-  background: white;
-  width: 3rem;
-  height: 3rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-`;
-
-const ImageContainer = styled.div`
-  border-radius: 50%;
-  width: 2.7rem;
-  height: 2.7rem;
-  overflow: hidden;
-`;
-
-const ProfileImage = styled.img`
-  max-width: 100%;
-  max-height: 100%;
-`;
-
 const ProfileContainer = styled.div`
   margin-right: 0.5rem;
 `;
@@ -49,21 +31,19 @@ const ProfileContainer = styled.div`
 function AppBar() {
   const dispatch = useDispatch();
   const currentUser = useSelector(state => state.auth).currentUser;
-  const renderAccountButton = useCallback(
-    () => {
-      const photoURL = currentUser.photoURL;
-      if (photoURL) {
-        return (
-          <ProfileImageButton onClick={() => dispatch(signOut())}>
-            <ImageContainer>
-              <ProfileImage src={photoURL} />
-            </ImageContainer>
-          </ProfileImageButton>
-        );
-      }
-      return <Button icon={<Logout />} onClick={() => dispatch(signOut())} />;
-    },
-    [dispatch, currentUser]);
+  const renderAccountButton = useCallback(() => {
+    const photoURL = currentUser.photoURL;
+    if (photoURL) {
+      return (
+        <ProfileImageButton onClick={() => dispatch(signOut())}>
+          <ImageContainer>
+            <ProfileImage src={photoURL} />
+          </ImageContainer>
+        </ProfileImageButton>
+      );
+    }
+    return <Button icon={<Logout />} onClick={() => dispatch(signOut())} />;
+  }, [dispatch, currentUser]);
 
   return (
     <Bar>
@@ -74,8 +54,8 @@ function AppBar() {
         {currentUser ? (
           renderAccountButton()
         ) : (
-            <Button icon={<Login />} onClick={() => dispatch(openLoginLayer())} />
-          )}
+          <Button icon={<Login />} onClick={() => dispatch(openLoginLayer())} />
+        )}
       </ProfileContainer>
     </Bar>
   );

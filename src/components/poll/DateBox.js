@@ -6,7 +6,7 @@ import styled from 'styled-components';
 import { Like, Dislike, Star } from 'grommet-icons';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
-import { castVote } from 'actions/polls';
+import { castVote, setVotes } from 'actions/polls';
 
 const StarContainer = styled.div`
   padding: 0.2em;
@@ -42,7 +42,9 @@ function DateBox({ date, withVotes, top, pollId, votes }) {
   const dayOfMonth = momentDate.format('D');
   const dayOfWeek = momentDate.format('dddd');
 
-  const currentVote = votes ? votes.find(vote => vote.userId === userId) : null;
+  const currentVote = votes
+    ? votes.find(vote => vote.user.uid === userId)
+    : null;
 
   const getButtonBackground = type => {
     const defaultColor = 'light-3';
@@ -124,7 +126,9 @@ function DateBox({ date, withVotes, top, pollId, votes }) {
               </Box>
             </SelectButton>
           </Box>
-          <Anchor>See who voted</Anchor>
+          <Anchor onClick={() => dispatch(setVotes(votes))}>
+            See who voted
+          </Anchor>
         </>
       )}
     </Container>
