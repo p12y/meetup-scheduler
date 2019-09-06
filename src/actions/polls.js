@@ -19,25 +19,28 @@ export const createPoll = ({
   history,
 }) => async dispatch => {
   try {
-    const docRef = await firebase
+    const newDocRef = firebase
       .firestore()
       .collection('polls')
-      .add({
-        dates: dates.map(date => ({
-          date,
-          votes: [],
-          yesVoteCount: 0,
-          noVoteCount: 0,
-        })),
-        createdBy,
-        name,
-        location,
-        description,
-        createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+      .doc();
+
+    await newDocRef.set({
+      dates: dates.map(date => ({
+        date,
         votes: [],
-        numParticipants: 0,
-      });
-    history.push(`/p/${docRef.id}`);
+        yesVoteCount: 0,
+        noVoteCount: 0,
+      })),
+      createdBy,
+      name,
+      location,
+      description,
+      createdAt: firebase.firestore.Timestamp.fromDate(new Date()),
+      votes: [],
+      numParticipants: 0,
+      id: newDocRef.id,
+    });
+    history.push(`/p/${newDocRef.id}`);
     dispatch(success('Poll created!'));
   } catch (err) {
     console.error(err);
@@ -135,7 +138,8 @@ export const castVote = ({ vote, pollId, date }) => async dispatch => {
       dateObj.votes = updatedVotes;
       dateObj.yesVoteCount = yesVoteCount;
       dateObj.noVoteCount = noVoteCount;
-      t.update(pollRef, { dates });
+      const numParticipants = yesVoteCount + noVoteCount;
+      t.update(pollRef, { dates, numParticipants });
       dispatch({ type: 'POLL_UPDATED' });
     });
   } catch (error) {
@@ -159,3 +163,37 @@ export const openWhoVotedLayer = () => ({
 export const closeWhoVotedLayer = () => ({
   type: 'CLOSE_WHO_VOTED_LAYER',
 });
+
+export const fetchPolls = uid => async dispatch => {
+  const polls = [];
+  try {
+    const snapshot = await firebase
+      .firestore()
+      .collection('polls')
+      .where('createdBy', '==', uid)
+      .get();
+
+    if (!snapshot.empty) {
+      snapshot.forEach(doc => {
+        polls.push(doc.data());
+      });
+    }
+
+    dispatch({
+      type: 'FETCH_POLLS_SUCCESS',
+      polls,
+    });
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: 'FETCH_POLLS_ERROR',
+    });
+  }
+};
+
+export const navigateToPoll = ({ history, id }) => {
+  history.push(`/p/${id}`);
+  return {
+    type: 'NAVIGATE_TO_POLL',
+  };
+};

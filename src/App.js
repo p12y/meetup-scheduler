@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Grommet } from 'grommet';
-import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import firebase from 'lib/firebase';
 import { setCurrentUser } from 'actions/auth';
 import { ToastContainer } from 'react-toastify-redux';
@@ -42,9 +42,11 @@ function App() {
             pauseOnHover
           />
           <AppBar />
-          <Route exact path="/" component={Dashboard} />
-          <Route path="/polls/new" component={NewPoll} />
-          <Route path="/p/:id" component={Poll} />
+          <Switch>
+            <Route exact path="/" component={Dashboard} />
+            <Route path="/polls/new" component={NewPoll} />
+            <Route path="/p/:id" component={Poll} />
+          </Switch>
           <LoginLayer />
         </Grommet>
       </Router>

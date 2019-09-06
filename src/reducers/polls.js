@@ -22,6 +22,11 @@ const polls = (state = {}, action) => {
         ...state,
         whoVotedLayerOpen: false,
       };
+    case 'FETCH_POLLS_SUCCESS':
+      return {
+        ...state,
+        userPolls: action.polls,
+      };
     default:
       return state;
   }

@@ -17,7 +17,7 @@ function LoginLayer() {
   const onClose = useCallback(() => dispatch(closeLoginLayer()), [dispatch]);
 
   return (
-    <Box fill align="center" justify="center">
+    <>
       {open && (
         <Layer
           position="right"
@@ -40,7 +40,7 @@ function LoginLayer() {
               <Button icon={<GrommetIcons.Close />} onClick={onClose} />
             </Box>
             <>
-              {formState === SIGN_IN_WITH_PROVIDERS ?
+              {formState === SIGN_IN_WITH_PROVIDERS ? (
                 <>
                   {providerNames.map(provider => (
                     <LoginButton
@@ -51,12 +51,15 @@ function LoginLayer() {
                       })}
                     />
                   ))}
-                </> : <EmailSignInForm />}
+                </>
+              ) : (
+                <EmailSignInForm />
+              )}
             </>
           </Box>
         </Layer>
       )}
-    </Box>
+    </>
   );
 }
 

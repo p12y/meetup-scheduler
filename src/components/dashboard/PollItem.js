@@ -2,12 +2,15 @@ import React from 'react';
 import { Anchor, Text, Box } from 'grommet';
 import PropTypes from 'prop-types';
 
-function PollItem({ name, numParticipants }) {
+function PollItem({ name, numParticipants, onClick }) {
   return (
-    <Box justify="center" pad={{
-      "top": "medium",
-
-    }} direction="row">
+    <Box
+      justify="center"
+      pad={{
+        top: 'medium',
+      }}
+      direction="row"
+    >
       <Box
         direction="row"
         justify="between"
@@ -16,8 +19,8 @@ function PollItem({ name, numParticipants }) {
         pad="medium"
         background="light-2"
       >
-        <Text>
-          <Anchor href="#" label={name} />
+        <Text onClick={onClick}>
+          <Anchor label={name} />
         </Text>
         <Text>{numParticipants} participants</Text>
       </Box>
