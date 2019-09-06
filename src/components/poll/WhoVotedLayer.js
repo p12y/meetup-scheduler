@@ -1,5 +1,4 @@
-import React, { useCallback } from 'react';
-import styled from 'styled-components';
+import React from 'react';
 import { Box, Button, Heading, Layer, Text } from 'grommet';
 import * as GrommetIcons from 'grommet-icons';
 import { useSelector, useDispatch } from 'react-redux';
@@ -9,13 +8,6 @@ import {
   ImageContainer,
   ProfileImage,
 } from 'styled/ProfileImage';
-
-const UserContainer = styled.div`
-  display: flex;
-  align-items: center;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-`;
 
 const defaultProfileImageUrl =
   'https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y';
