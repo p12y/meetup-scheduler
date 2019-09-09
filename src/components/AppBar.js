@@ -9,6 +9,7 @@ import {
   ImageContainer,
   ProfileImage,
 } from 'styled/ProfileImage';
+import { UnstyledLink } from 'styled/generic';
 
 const Bar = props => (
   <Box
@@ -47,9 +48,11 @@ function AppBar() {
 
   return (
     <Bar>
-      <Heading level="4" margin="none">
-        App name
-      </Heading>
+      <UnstyledLink to="/">
+        <Heading level="4" margin="none">
+          Meetup Polls
+        </Heading>
+      </UnstyledLink>
       <ProfileContainer>
         {currentUser ? (
           renderAccountButton()
