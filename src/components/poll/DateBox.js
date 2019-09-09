@@ -126,9 +126,13 @@ function DateBox({ date, withVotes, top, pollId, votes }) {
               </Box>
             </SelectButton>
           </Box>
-          <Anchor onClick={() => dispatch(setVotes(votes))}>
-            See who voted
-          </Anchor>
+          <div style={{ minHeight: '1.5em' }}>
+            {Boolean(votes.length) && (
+              <Anchor onClick={() => dispatch(setVotes(votes))}>
+                See who voted
+              </Anchor>
+            )}
+          </div>
         </>
       )}
     </Container>

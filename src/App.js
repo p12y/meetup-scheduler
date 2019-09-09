@@ -11,8 +11,11 @@ import Dashboard from 'pages/Dashboard';
 import NewPoll from 'pages/polls/NewPoll';
 import Poll from 'pages/polls/Poll';
 import LoginLayer from 'components/login-layer/LoginLayer';
+import FullPageLoader from 'components/FullPageLoader';
 
 import 'react-toastify/dist/ReactToastify.css';
+
+const loading = true;
 
 function App() {
   const dispatch = useDispatch();
@@ -28,10 +31,12 @@ function App() {
     });
   }, [dispatch]);
 
+  if (loading) return <FullPageLoader />;
+
   return (
     <>
       <Router>
-        <Grommet full theme={theme}>
+        <Grommet theme={theme}>
           <ToastContainer
             autoClose={2500}
             position="top-right"

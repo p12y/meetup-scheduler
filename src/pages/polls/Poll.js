@@ -57,7 +57,13 @@ function Poll(props) {
               </FlexText>
             </Box>
 
-            <Box direction="row" wrap fill align="center">
+            <Box
+              direction="row"
+              wrap
+              fill
+              align="center"
+              pad={{ top: 'medium', bottom: 'large' }}
+            >
               {pollData.dates.map(dateObj => (
                 <DateBox
                   key={dateObj.date}
