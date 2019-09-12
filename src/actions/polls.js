@@ -1,5 +1,6 @@
 import firebase from 'lib/firebase';
 import { error, success } from 'react-toastify-redux';
+import { setPerformingAsync } from 'actions/common';
 
 const pollObserver = {};
 
@@ -98,7 +99,7 @@ export const unsubscribePollObserver = () => dispatch => {
 };
 
 export const castVote = ({ vote, pollId, date }) => async dispatch => {
-  dispatch(setPerformingAsync());
+  dispatch(setPerformingAsync('polls'));
   const pollRef = firebase
     .firestore()
     .collection('polls')
@@ -204,7 +205,3 @@ export const navigateToPoll = ({ history, id }) => {
     type: 'NAVIGATE_TO_POLL',
   };
 };
-
-export const setPerformingAsync = () => ({
-  type: 'SET_PERFORMING_ASYNC',
-});

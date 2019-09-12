@@ -89,12 +89,14 @@ const auth = (
     case types.SET_PERFORMING_ASYNC:
       return {
         ...state,
-        isPerformingAsync: true,
+        isPerformingAsync:
+          action.componentName === 'auth' ? true : state.isPerformingAsync,
       };
     case types.UNSET_PERFORMING_ASYNC:
       return {
         ...state,
-        isPerformingAsync: false,
+        isPerformingAsync:
+          action.componentName === 'auth' ? false : state.isPerformingAsync,
       };
     default:
       return state;

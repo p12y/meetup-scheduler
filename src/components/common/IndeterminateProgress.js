@@ -8,6 +8,7 @@ const Slider = styled.div`
   height: 5px;
   overflow-x: hidden;
   ${({ sticky }) => sticky && stickyStyle}
+  z-index: 99;
 `;
 
 const Line = styled.div`

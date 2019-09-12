@@ -45,7 +45,8 @@ const polls = (
     case 'SET_PERFORMING_ASYNC':
       return {
         ...state,
-        isPerformingAsync: true,
+        isPerformingAsync:
+          action.componentName === 'polls' ? true : state.isPerformingAsync,
       };
     default:
       return state;

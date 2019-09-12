@@ -1,6 +1,7 @@
 import firebase from 'lib/firebase';
 import { providers, AuthError } from 'helpers/authHelper';
 import * as types from 'constants/auth';
+import { setPerformingAsync, unsetPerformingAsync } from 'actions/common';
 
 // To use emulated functions, uncomment the line below:
 // firebase.functions().useFunctionsEmulator('http://localhost:5001');
@@ -28,14 +29,6 @@ export const signInWithMail = () => ({
 
 export const clearAllFormErrors = () => ({
   type: types.CLEAR_ALL_FORM_ERRORS,
-});
-
-export const setPerformingAsync = () => ({
-  type: types.SET_PERFORMING_ASYNC,
-});
-
-export const unsetPerformingAsync = () => ({
-  type: types.UNSET_PERFORMING_ASYNC,
 });
 
 export const clearFormError = name => dispatch => {
@@ -125,7 +118,7 @@ export const signInWithTwitter = () => dispatch => {
 };
 
 export const checkEmailExists = email => async dispatch => {
-  dispatch(setPerformingAsync());
+  dispatch(setPerformingAsync('auth'));
   try {
     /* 
       Validate email with simple regex to avoid calling 
@@ -160,11 +153,11 @@ export const checkEmailExists = email => async dispatch => {
       console.error(error.code);
     }
   }
-  dispatch(unsetPerformingAsync());
+  dispatch(unsetPerformingAsync('auth'));
 };
 
 export const signInWithEmailAndPassword = ({ email, password }) => dispatch => {
-  dispatch(setPerformingAsync());
+  dispatch(setPerformingAsync('auth'));
   // Sign user in
   firebase
     .auth()
@@ -175,7 +168,7 @@ export const signInWithEmailAndPassword = ({ email, password }) => dispatch => {
         Sign in will be handled automatically by auth listener
       */
       dispatch(resetLoginLayer());
-      dispatch(unsetPerformingAsync());
+      dispatch(unsetPerformingAsync('auth'));
     })
     .catch(error => {
       // Set errors to be visible inline on their respective fields
@@ -191,7 +184,7 @@ export const signInWithEmailAndPassword = ({ email, password }) => dispatch => {
       dispatch(
         signInWithEmailAndPasswordFailure({ emailError, passwordError })
       );
-      dispatch(unsetPerformingAsync());
+      dispatch(unsetPerformingAsync('auth'));
     });
 };
 
@@ -200,7 +193,7 @@ export const createUserWithEmailAndPassword = ({
   password,
   displayName,
 }) => async dispatch => {
-  dispatch(setPerformingAsync());
+  dispatch(setPerformingAsync('auth'));
   try {
     function validatePresence(field, code, message) {
       if (!field.trim()) throw new AuthError(code, message);
@@ -230,7 +223,7 @@ export const createUserWithEmailAndPassword = ({
 
     // Reset login layer
     dispatch(resetLoginLayer());
-    dispatch(unsetPerformingAsync());
+    dispatch(unsetPerformingAsync('auth'));
   } catch (error) {
     switch (error.code) {
       // Display inline error messages
@@ -266,7 +259,7 @@ export const createUserWithEmailAndPassword = ({
         console.error(error);
         break;
     }
-    dispatch(unsetPerformingAsync());
+    dispatch(unsetPerformingAsync('auth'));
   }
 };
 
