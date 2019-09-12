@@ -1,4 +1,10 @@
-const polls = (state = {}, action) => {
+const polls = (
+  state = {
+    isLoading: true,
+    isPerformingAsync: false,
+  },
+  action
+) => {
   switch (action.type) {
     case 'FETCH_POLL_SUCCESS':
       return {
@@ -6,6 +12,8 @@ const polls = (state = {}, action) => {
         id: action.id,
         pollData: action.pollData,
         topDate: action.topDate,
+        isLoading: false,
+        isPerformingAsync: false,
       };
     case 'SET_VOTES':
       return {
@@ -26,6 +34,18 @@ const polls = (state = {}, action) => {
       return {
         ...state,
         userPolls: action.polls,
+        isLoading: false,
+        isPerformingAsync: false,
+      };
+    case 'SET_IS_LOADING':
+      return {
+        ...state,
+        isLoading: true,
+      };
+    case 'SET_PERFORMING_ASYNC':
+      return {
+        ...state,
+        isPerformingAsync: true,
       };
     default:
       return state;

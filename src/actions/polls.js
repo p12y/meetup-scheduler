@@ -49,6 +49,7 @@ export const createPoll = ({
 };
 
 export const fetchPoll = id => async dispatch => {
+  dispatch(setIsLoading());
   const doc = firebase
     .firestore()
     .collection('polls')
@@ -97,6 +98,7 @@ export const unsubscribePollObserver = () => dispatch => {
 };
 
 export const castVote = ({ vote, pollId, date }) => async dispatch => {
+  dispatch(setPerformingAsync());
   const pollRef = firebase
     .firestore()
     .collection('polls')
@@ -164,7 +166,12 @@ export const closeWhoVotedLayer = () => ({
   type: 'CLOSE_WHO_VOTED_LAYER',
 });
 
+export const setIsLoading = () => ({
+  type: 'SET_IS_LOADING',
+});
+
 export const fetchPolls = uid => async dispatch => {
+  dispatch(setIsLoading());
   const polls = [];
   try {
     const snapshot = await firebase
@@ -197,3 +204,7 @@ export const navigateToPoll = ({ history, id }) => {
     type: 'NAVIGATE_TO_POLL',
   };
 };
+
+export const setPerformingAsync = () => ({
+  type: 'SET_PERFORMING_ASYNC',
+});

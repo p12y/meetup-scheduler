@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import PollItem from 'components/dashboard/PollItem';
 import PageTitle from 'components/common/PageTitle';
 import { fetchPolls, navigateToPoll } from 'actions/polls';
+import AsyncProgressComponent from 'components/AsyncProgressComponent';
 
 const PollsContainer = styled.div`
   width: 60%;
@@ -21,13 +22,14 @@ function Dashboard({ history }) {
   const currentUserId = useSelector(
     state => state.auth.currentUser && state.auth.currentUser.uid
   );
+  const isLoading = useSelector(state => state.polls.isLoading);
 
   useEffect(() => {
     if (currentUserId) dispatch(fetchPolls(currentUserId));
   }, [dispatch, currentUserId]);
 
   return (
-    <>
+    <AsyncProgressComponent isLoading={isLoading}>
       <PageTitle title="Your polls" />
       <PollsContainer>
         <Link to="/polls/new">
@@ -48,7 +50,7 @@ function Dashboard({ history }) {
             />
           ))}
       </PollsContainer>
-    </>
+    </AsyncProgressComponent>
   );
 }
 

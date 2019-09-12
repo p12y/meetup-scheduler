@@ -30,6 +30,14 @@ export const clearAllFormErrors = () => ({
   type: types.CLEAR_ALL_FORM_ERRORS,
 });
 
+export const setPerformingAsync = () => ({
+  type: types.SET_PERFORMING_ASYNC,
+});
+
+export const unsetPerformingAsync = () => ({
+  type: types.UNSET_PERFORMING_ASYNC,
+});
+
 export const clearFormError = name => dispatch => {
   const error = {
     email: 'emailError',
@@ -39,7 +47,7 @@ export const clearFormError = name => dispatch => {
 
   if (error) {
     dispatch({
-      type: 'CLEAR_FORM_ERROR',
+      type: types.CLEAR_FORM_ERROR,
       error,
     });
   }
@@ -117,6 +125,7 @@ export const signInWithTwitter = () => dispatch => {
 };
 
 export const checkEmailExists = email => async dispatch => {
+  dispatch(setPerformingAsync());
   try {
     /* 
       Validate email with simple regex to avoid calling 
@@ -151,9 +160,11 @@ export const checkEmailExists = email => async dispatch => {
       console.error(error.code);
     }
   }
+  dispatch(unsetPerformingAsync());
 };
 
 export const signInWithEmailAndPassword = ({ email, password }) => dispatch => {
+  dispatch(setPerformingAsync());
   // Sign user in
   firebase
     .auth()
@@ -164,6 +175,7 @@ export const signInWithEmailAndPassword = ({ email, password }) => dispatch => {
         Sign in will be handled automatically by auth listener
       */
       dispatch(resetLoginLayer());
+      dispatch(unsetPerformingAsync());
     })
     .catch(error => {
       // Set errors to be visible inline on their respective fields
@@ -179,6 +191,7 @@ export const signInWithEmailAndPassword = ({ email, password }) => dispatch => {
       dispatch(
         signInWithEmailAndPasswordFailure({ emailError, passwordError })
       );
+      dispatch(unsetPerformingAsync());
     });
 };
 
@@ -187,6 +200,7 @@ export const createUserWithEmailAndPassword = ({
   password,
   displayName,
 }) => async dispatch => {
+  dispatch(setPerformingAsync());
   try {
     function validatePresence(field, code, message) {
       if (!field.trim()) throw new AuthError(code, message);
@@ -216,6 +230,7 @@ export const createUserWithEmailAndPassword = ({
 
     // Reset login layer
     dispatch(resetLoginLayer());
+    dispatch(unsetPerformingAsync());
   } catch (error) {
     switch (error.code) {
       // Display inline error messages
@@ -251,6 +266,7 @@ export const createUserWithEmailAndPassword = ({
         console.error(error);
         break;
     }
+    dispatch(unsetPerformingAsync());
   }
 };
 

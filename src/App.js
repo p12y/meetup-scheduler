@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Grommet } from 'grommet';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import firebase from 'lib/firebase';
@@ -15,9 +15,8 @@ import FullPageLoader from 'components/FullPageLoader';
 
 import 'react-toastify/dist/ReactToastify.css';
 
-const loading = true;
-
 function App() {
+  const isLoading = useSelector(state => state.auth.isLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -31,7 +30,7 @@ function App() {
     });
   }, [dispatch]);
 
-  if (loading) return <FullPageLoader />;
+  if (isLoading) return <FullPageLoader />;
 
   return (
     <>

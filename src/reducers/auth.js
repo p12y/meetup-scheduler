@@ -10,6 +10,8 @@ const auth = (
     emailError: '',
     passwordError: '',
     displayNameError: '',
+    isLoading: true,
+    isPerformingAsync: false,
   },
   action
 ) => {
@@ -30,6 +32,7 @@ const auth = (
         ...state,
         loginLayerOpen: action.currentUser ? false : state.loginLayerOpen,
         currentUser: action.currentUser,
+        isLoading: false,
       };
     case types.SIGN_IN_WITH_MAIL:
       return {
@@ -64,6 +67,7 @@ const auth = (
         emailError: action.emailError || '',
         passwordError: action.passwordError || '',
         displayNameError: action.displayNameError || '',
+        isLoading: false,
       };
     case types.CLEAR_ALL_FORM_ERRORS:
       return {
@@ -72,7 +76,7 @@ const auth = (
         passwordError: '',
         displayNameError: '',
       };
-    case 'CLEAR_FORM_ERROR':
+    case types.CLEAR_FORM_ERROR:
       return {
         ...state,
         [action.error]: '',
@@ -81,6 +85,16 @@ const auth = (
       return {
         ...state,
         formState: formStates.CREATE_EMAIL_ACCOUNT,
+      };
+    case types.SET_PERFORMING_ASYNC:
+      return {
+        ...state,
+        isPerformingAsync: true,
+      };
+    case types.UNSET_PERFORMING_ASYNC:
+      return {
+        ...state,
+        isPerformingAsync: false,
       };
     default:
       return state;

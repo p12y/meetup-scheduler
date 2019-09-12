@@ -8,6 +8,7 @@ import { withRouter } from 'react-router';
 import { fetchPoll, unsubscribePollObserver } from 'actions/polls';
 import DateBox from 'components/poll/DateBox';
 import WhoVotedLayer from 'components/poll/WhoVotedLayer';
+import AsyncProgressComponent from 'components/AsyncProgressComponent';
 
 const Container = styled.div`
   margin-bottom: 1rem;
@@ -27,6 +28,8 @@ function Poll(props) {
   const dispatch = useDispatch();
   const pollData = useSelector(state => state.polls.pollData);
   const topDate = useSelector(state => state.polls.topDate);
+  const isLoading = useSelector(state => state.polls.isLoading);
+  const isPerformingAsync = useSelector(state => state.polls.isPerformingAsync);
   const pollId = props.match.params.id;
 
   useEffect(() => {
@@ -37,7 +40,10 @@ function Poll(props) {
   }, [dispatch, pollId]);
 
   return (
-    <>
+    <AsyncProgressComponent
+      isLoading={isLoading}
+      isPerformingAsync={isPerformingAsync}
+    >
       {pollData && (
         <>
           <Container>
@@ -79,7 +85,7 @@ function Poll(props) {
           <WhoVotedLayer />
         </>
       )}
-    </>
+    </AsyncProgressComponent>
   );
 }
 
