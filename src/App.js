@@ -13,6 +13,7 @@ import Poll from 'pages/polls/Poll';
 import Landing from 'pages/Landing';
 import LoginLayer from 'components/login-layer/LoginLayer';
 import FullPageLoader from 'components/FullPageLoader';
+import ProtectedRoute from 'components/ProtectedRoute';
 
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -49,8 +50,8 @@ function App() {
           <AppBar />
           <Switch>
             <Route exact path="/" component={Landing} />
-            <Route exact path="/dashboard" component={Dashboard} />
-            <Route path="/polls/new" component={NewPoll} />
+            <ProtectedRoute exact path="/dashboard" component={Dashboard} />
+            <ProtectedRoute path="/polls/new" component={NewPoll} />
             <Route path="/p/:id" component={Poll} />
           </Switch>
           <LoginLayer />
