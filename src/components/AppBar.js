@@ -8,7 +8,7 @@ import {
   ProfileImageButton,
   ImageContainer,
   ProfileImage,
-} from 'styled/ProfileImage';
+} from 'styled/profileImage';
 import { UnstyledLink } from 'styled/generic';
 
 const Bar = props => (

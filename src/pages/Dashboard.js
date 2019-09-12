@@ -1,20 +1,13 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { withRouter } from 'react-router';
-import { Button } from 'grommet';
-import { AddCircle } from 'grommet-icons';
-import { Link } from 'react-router-dom';
-import styled from 'styled-components';
+import { Text, Box } from 'grommet';
 import PollItem from 'components/dashboard/PollItem';
 import PageTitle from 'components/common/PageTitle';
 import { fetchPolls, navigateToPoll } from 'actions/polls';
 import AsyncProgressComponent from 'components/AsyncProgressComponent';
-
-const PollsContainer = styled.div`
-  width: 60%;
-  margin: auto;
-  text-align: right;
-`;
+import NewPollButton from './polls/NewPollButton';
+import { MessageContainer, PollsContainer } from 'styled/polls';
 
 function Dashboard({ history }) {
   const dispatch = useDispatch();
@@ -28,27 +21,33 @@ function Dashboard({ history }) {
     if (currentUserId) dispatch(fetchPolls(currentUserId));
   }, [dispatch, currentUserId]);
 
+  const renderPolls = () => {
+    if (!userPolls) return null;
+    if (userPolls.length) {
+      return userPolls.map(poll => (
+        <PollItem
+          onClick={() => dispatch(navigateToPoll({ history, id: poll.id }))}
+          key={poll.id}
+          name={poll.name}
+          numParticipants={poll.numParticipants || 0}
+        />
+      ));
+    }
+    return (
+      <MessageContainer>
+        <Text>You don't have any polls. Create one to get started!</Text>
+        <Box margin="small" />
+        <NewPollButton />
+      </MessageContainer>
+    );
+  };
+
   return (
     <AsyncProgressComponent isLoading={isLoading}>
       <PageTitle title="Your polls" />
       <PollsContainer>
-        <Link to="/polls/new">
-          <Button
-            primary
-            icon={<AddCircle />}
-            label="New poll"
-            alignSelf="end"
-          />
-        </Link>
-        {userPolls &&
-          userPolls.map(poll => (
-            <PollItem
-              onClick={() => dispatch(navigateToPoll({ history, id: poll.id }))}
-              key={poll.id}
-              name={poll.name}
-              numParticipants={poll.numParticipants || 0}
-            />
-          ))}
+        {userPolls && Boolean(userPolls.length) && <NewPollButton />}
+        {renderPolls()}
       </PollsContainer>
     </AsyncProgressComponent>
   );
