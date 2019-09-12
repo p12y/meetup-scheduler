@@ -7,6 +7,7 @@ import { Like, Dislike, Star } from 'grommet-icons';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { castVote, setVotes } from 'actions/polls';
+import { openLoginLayer } from 'actions/auth';
 
 const StarContainer = styled.div`
   padding: 0.2em;
@@ -64,7 +65,11 @@ function DateBox({ date, withVotes, top, pollId, votes, isDemo }) {
       )
     : {};
 
-  const handleClick = callback => () => (!isDemo ? callback() : null);
+  const handleClick = callback => () => {
+    if (isDemo) return null;
+    if (!userId) return dispatch(openLoginLayer());
+    return callback();
+  };
 
   return (
     <Container
