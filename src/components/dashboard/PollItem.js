@@ -22,7 +22,10 @@ function PollItem({ name, numParticipants, onClick }) {
         <Text onClick={onClick}>
           <Anchor label={name} />
         </Text>
-        <Text>{numParticipants} participants</Text>
+        <Text>
+          {numParticipants}&nbsp;
+          {numParticipants === 1 ? 'participant' : 'participants'}
+        </Text>
       </Box>
     </Box>
   );
