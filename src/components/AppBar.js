@@ -48,7 +48,7 @@ function AppBar() {
 
   return (
     <Bar>
-      <UnstyledLink to="/">
+      <UnstyledLink to="/dashboard">
         <Heading level="4" margin="none">
           Meetup Polls
         </Heading>

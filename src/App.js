@@ -10,6 +10,7 @@ import AppBar from 'components/AppBar';
 import Dashboard from 'pages/Dashboard';
 import NewPoll from 'pages/polls/NewPoll';
 import Poll from 'pages/polls/Poll';
+import Landing from 'pages/Landing';
 import LoginLayer from 'components/login-layer/LoginLayer';
 import FullPageLoader from 'components/FullPageLoader';
 
@@ -47,7 +48,8 @@ function App() {
           />
           <AppBar />
           <Switch>
-            <Route exact path="/" component={Dashboard} />
+            <Route exact path="/" component={Landing} />
+            <Route exact path="/dashboard" component={Dashboard} />
             <Route path="/polls/new" component={NewPoll} />
             <Route path="/p/:id" component={Poll} />
           </Switch>

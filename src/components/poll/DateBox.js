@@ -31,7 +31,7 @@ const Container = styled(Box)`
   position: relative;
 `;
 
-function DateBox({ date, withVotes, top, pollId, votes }) {
+function DateBox({ date, withVotes, top, pollId, votes, isDemo }) {
   const userId = useSelector(
     state => state.auth.currentUser && state.auth.currentUser.uid
   );
@@ -63,6 +63,8 @@ function DateBox({ date, withVotes, top, pollId, votes }) {
         { yes: 0, no: 0 }
       )
     : {};
+
+  const handleClick = callback => () => (!isDemo ? callback() : null);
 
   return (
     <Container
@@ -97,9 +99,9 @@ function DateBox({ date, withVotes, top, pollId, votes }) {
               background={getButtonBackground('yes')}
               margin="xsmall"
               round="small"
-              onClick={() => {
+              onClick={handleClick(() => {
                 dispatch(castVote({ date, pollId, vote: 'yes' }));
-              }}
+              })}
             >
               <Box direction="row" justify="around">
                 <ButtonContent>{voteCounts.yes || 0}</ButtonContent>
@@ -114,9 +116,9 @@ function DateBox({ date, withVotes, top, pollId, votes }) {
               background={getButtonBackground('no')}
               margin="xsmall"
               round="small"
-              onClick={() => {
+              onClick={handleClick(() => {
                 dispatch(castVote({ date, pollId, vote: 'no' }));
-              }}
+              })}
             >
               <Box direction="row" justify="around">
                 <ButtonContent>{voteCounts.no || 0}</ButtonContent>
@@ -128,7 +130,7 @@ function DateBox({ date, withVotes, top, pollId, votes }) {
           </Box>
           <div style={{ minHeight: '1.5em' }}>
             {Boolean(votes.length) && (
-              <Anchor onClick={() => dispatch(setVotes(votes))}>
+              <Anchor onClick={handleClick(() => dispatch(setVotes(votes)))}>
                 See who voted
               </Anchor>
             )}
@@ -140,7 +142,10 @@ function DateBox({ date, withVotes, top, pollId, votes }) {
 }
 
 DateBox.propTypes = {
-  date: PropTypes.string.isRequired,
+  date: PropTypes.oneOfType([
+    PropTypes.string.isRequired,
+    PropTypes.instanceOf(Date).isRequired,
+  ]),
   withVotes: PropTypes.bool,
   top: PropTypes.bool,
   votes: PropTypes.array,
