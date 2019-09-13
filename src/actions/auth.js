@@ -1,3 +1,11 @@
+/**
+ * Uses the Firebase auth module.
+ * The Fireebase auth module doesn't use native promises,
+ * so they must either be wrapped in a promise, or you should
+ * use then & catch methods on the promise object,
+ * instead of a try/catch block.
+ */
+
 import firebase from 'lib/firebase';
 import { providers, AuthError } from 'helpers/authHelper';
 import * as types from 'constants/auth';

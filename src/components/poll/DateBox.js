@@ -2,35 +2,17 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Box, Text, Anchor } from 'grommet';
 import moment from 'moment';
-import styled from 'styled-components';
 import { Like, Dislike, Star } from 'grommet-icons';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import { castVote, setVotes } from 'actions/polls';
 import { openLoginLayer } from 'actions/auth';
-
-const StarContainer = styled.div`
-  padding: 0.2em;
-  position: absolute;
-  right: 0;
-  top: 0;
-`;
-
-const SelectButton = styled(Box)`
-  cursor: pointer;
-`;
-
-const ButtonContent = styled.span`
-  display: inline-flex;
-  margin: 0;
-  padding-left: 0.2rem;
-  padding-right: 0.2rem;
-  padding: 0;
-`;
-
-const Container = styled(Box)`
-  position: relative;
-`;
+import {
+  StarContainer,
+  SelectButton,
+  ButtonContent,
+  Container,
+} from 'styled/dateBox';
 
 function DateBox({ date, withVotes, top, pollId, votes, isDemo }) {
   const userId = useSelector(
