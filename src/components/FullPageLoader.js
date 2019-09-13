@@ -16,7 +16,7 @@ const LoaderContainer = styled.div`
   z-index: 999;
 `;
 
-export default ({ visible }) => {
+function FullPageLoader({ visible }) {
   useEffect(() => {
     const bodyStyle = document.querySelector('body').style;
     bodyStyle.overflow = 'hidden';
@@ -28,4 +28,6 @@ export default ({ visible }) => {
       <img src={LoaderSvg} alt="loading" />
     </LoaderContainer>
   );
-};
+}
+
+export default FullPageLoader;

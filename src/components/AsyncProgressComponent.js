@@ -1,7 +1,7 @@
 import React from 'react';
 import IndeterminateProgress from 'components/common/IndeterminateProgress';
 
-export default ({ isLoading, children, isPerformingAsync }) => {
+function AsyncProgressComponent({ isLoading, children, isPerformingAsync }) {
   if (isLoading) return <IndeterminateProgress />;
   return (
     <>
@@ -9,4 +9,6 @@ export default ({ isLoading, children, isPerformingAsync }) => {
       {children}
     </>
   );
-};
+}
+
+export default AsyncProgressComponent;

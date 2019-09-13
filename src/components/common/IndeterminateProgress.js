@@ -50,7 +50,7 @@ const stickyStyle = css`
   top: 0;
 `;
 
-const IndeterminateProgress = ({ color, sticky }) => {
+function IndeterminateProgress({ color, sticky }) {
   return (
     <Slider sticky={sticky}>
       <Line background={color} />
@@ -58,7 +58,7 @@ const IndeterminateProgress = ({ color, sticky }) => {
       <Dec background={color} />
     </Slider>
   );
-};
+}
 
 IndeterminateProgress.defaultProps = {
   color: base.global.colors.brand,

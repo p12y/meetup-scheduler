@@ -8,17 +8,16 @@ const ButtonGroup = styled.div`
   text-align: right;
 `;
 
-export default function ActionButtons({
-  cancelText,
-  showCancel,
-  nextAction,
-  nextText,
-}) {
+function ActionButtons({ cancelText, showCancel, nextAction, nextText }) {
   const dispatch = useDispatch();
   return (
     <ButtonGroup>
       {showCancel && (
-        <Button margin="small" label={cancelText} onClick={() => dispatch(cancelMailSignIn())} />
+        <Button
+          margin="small"
+          label={cancelText}
+          onClick={() => dispatch(cancelMailSignIn())}
+        />
       )}
       <Button label={nextText} primary onClick={nextAction} />
     </ButtonGroup>
@@ -30,3 +29,5 @@ ActionButtons.defaultProps = {
   nextText: 'Next',
   showCancel: true,
 };
+
+export default ActionButtons;
