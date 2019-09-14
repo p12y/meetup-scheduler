@@ -18,6 +18,7 @@ ProfileImageButton.defaultProps = {
 
 export const ImageContainer = styled.div`
   border-radius: 50%;
+  background: silver;
   width: 90%;
   height: 90%;
   overflow: hidden;
