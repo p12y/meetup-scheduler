@@ -1,9 +1,6 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
 import { Grommet } from 'grommet';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import firebase from 'lib/firebase';
-import { setCurrentUser } from 'actions/auth';
 import { ToastContainer } from 'react-toastify-redux';
 import theme from 'config/theme';
 import AppBar from 'components/AppBar';
@@ -14,23 +11,12 @@ import Landing from 'pages/Landing';
 import LoginLayer from 'components/login-layer/LoginLayer';
 import FullPageLoader from 'components/FullPageLoader';
 import ProtectedRoute from 'components/ProtectedRoute';
+import { useAuthObserver } from 'hooks';
 
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
-  const isLoading = useSelector(state => state.auth.isLoading);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    const unregisterAuthObserver = firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        dispatch(setCurrentUser(user));
-      } else {
-        dispatch(setCurrentUser(null));
-      }
-      return () => unregisterAuthObserver();
-    });
-  }, [dispatch]);
+  const isLoading = useAuthObserver();
 
   if (isLoading) return <FullPageLoader />;
 
