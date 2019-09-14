@@ -179,6 +179,7 @@ export const fetchPolls = uid => async dispatch => {
       .firestore()
       .collection('polls')
       .where('createdBy', '==', uid)
+      .orderBy('createdAt', 'desc')
       .get();
 
     if (!snapshot.empty) {
