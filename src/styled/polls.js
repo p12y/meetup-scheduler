@@ -5,6 +5,10 @@ export const PollsContainer = styled.div`
   margin: auto;
   text-align: right;
   margin-bottom: 3rem;
+
+  @media (max-width: 600px) {
+    width: 90%;
+  }
 `;
 
 export const MessageContainer = styled.div`

@@ -8,6 +8,7 @@ function PollItem({ name, numParticipants, onClick }) {
       justify="center"
       pad={{
         top: 'medium',
+        bottom: 'xsmall',
       }}
       direction="row"
     >
@@ -19,7 +20,7 @@ function PollItem({ name, numParticipants, onClick }) {
         pad="medium"
         background="light-2"
       >
-        <Text onClick={onClick}>
+        <Text onClick={onClick} textAlign="start" margin={{ right: 'small' }}>
           <Anchor label={name} />
         </Text>
         <Text>

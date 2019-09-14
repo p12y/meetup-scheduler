@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styled from 'styled-components';
 import PageTitle from 'components/common/PageTitle';
 import { Info, Location, ShareOption } from 'grommet-icons';
-import { Text, Box, Button, Paragraph } from 'grommet';
+import { Text, Box, Button, Paragraph, ResponsiveContext } from 'grommet';
 import { useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router';
 import { fetchPoll, unsubscribePollObserver } from 'actions/polls';
@@ -27,6 +27,7 @@ const FlexText = styled(Text)`
 
 function Poll({ match }) {
   const dispatch = useDispatch();
+  const size = useContext(ResponsiveContext);
   const pollData = useSelector(state => state.polls.pollData);
   const topDate = useSelector(state => state.polls.topDate);
   const isLoading = useSelector(state => state.polls.isLoading);
@@ -82,6 +83,7 @@ function Poll({ match }) {
                 wrap
                 fill
                 align="center"
+                justify={size === 'small' ? 'center' : 'stretch'}
                 pad={{ top: 'medium', bottom: 'large' }}
               >
                 {pollData.dates.map(dateObj => (
