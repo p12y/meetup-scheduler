@@ -24,6 +24,7 @@ function LoginLayer() {
       {open && (
         <Layer
           position="right"
+          responsive
           full="vertical"
           modal
           onClickOutside={onClose}
@@ -31,7 +32,7 @@ function LoginLayer() {
         >
           <AsyncProgressComponent isPerformingAsync={isPerformingAsync}>
             <Box
-              fill="vertical"
+              fill
               overflow="auto"
               width="medium"
               pad="medium"
@@ -41,7 +42,7 @@ function LoginLayer() {
                 <Heading level={3} margin="none">
                   Sign in to continue!
                 </Heading>
-                <Button icon={<GrommetIcons.Close />} onClick={onClose} />
+                <Button icon={<GrommetIcons.Close />} onClick={onClose} plain />
               </Box>
               <>
                 {formState === SIGN_IN_WITH_PROVIDERS ? (

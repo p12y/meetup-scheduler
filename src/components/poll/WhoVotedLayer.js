@@ -39,7 +39,7 @@ const WhoVotedLayer = () => {
               <Heading level={3} margin="none">
                 Who voted
               </Heading>
-              <Button icon={<GrommetIcons.Close />} onClick={onClose} />
+              <Button icon={<GrommetIcons.Close />} onClick={onClose} plain />
             </Box>
             <>
               {votes &&
