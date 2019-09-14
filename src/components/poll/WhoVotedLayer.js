@@ -15,7 +15,8 @@ const defaultProfileImageUrl =
 const WhoVotedLayer = () => {
   const dispatch = useDispatch();
   const open = useSelector(state => state.polls.whoVotedLayerOpen);
-  const votes = useSelector(state => state.polls.votes);
+  let votes = useSelector(state => state.polls.votes) || [];
+  votes = votes.sort(vote => (vote.vote === 'yes' ? -1 : 1));
   const onClose = () => dispatch(closeWhoVotedLayer());
 
   return (
@@ -35,39 +36,47 @@ const WhoVotedLayer = () => {
             pad="medium"
             onSubmit={onClose}
           >
-            <Box flex={false} direction="row" justify="between">
+            <Box
+              flex={false}
+              direction="row"
+              justify="between"
+              margin={{ bottom: 'small' }}
+            >
               <Heading level={3} margin="none">
                 Who voted
               </Heading>
               <Button icon={<GrommetIcons.Close />} onClick={onClose} plain />
             </Box>
-            <>
-              {votes &&
-                votes.map(vote => (
-                  <Box
-                    key={vote.user.email}
-                    direction="row"
-                    align="center"
-                    margin={{ top: 'xsmall', bottom: 'xsmall' }}
-                  >
-                    <ProfileImageButton width="2rem" height="2rem">
-                      <ImageContainer>
-                        <ProfileImage
-                          src={vote.user.photoURL || defaultProfileImageUrl}
-                        />
-                      </ImageContainer>
-                    </ProfileImageButton>
-                    <Text
-                      color={
-                        vote.vote === 'yes' ? 'status-ok' : 'status-critical'
-                      }
-                      margin={{ left: 'xsmall' }}
-                    >
-                      {vote.user.displayName || vote.user.email}
-                    </Text>
+            {votes &&
+              votes.map(vote => (
+                <Box
+                  key={vote.user.email}
+                  direction="row"
+                  align="center"
+                  margin={{ top: 'xsmall', bottom: 'xsmall' }}
+                >
+                  <ProfileImageButton width="2rem" height="2rem">
+                    <ImageContainer>
+                      <ProfileImage
+                        src={vote.user.photoURL || defaultProfileImageUrl}
+                      />
+                    </ImageContainer>
+                  </ProfileImageButton>
+                  <Text margin={{ left: 'xsmall' }}>
+                    {vote.user.displayName || vote.user.email}
+                  </Text>
+                  <Box pad={{ left: 'xsmall' }}>
+                    {vote.vote === 'yes' ? (
+                      <GrommetIcons.Checkmark size="small" color="status-ok" />
+                    ) : (
+                      <GrommetIcons.Close
+                        size="small"
+                        color="status-critical"
+                      />
+                    )}
                   </Box>
-                ))}
-            </>
+                </Box>
+              ))}
           </Box>
         </Layer>
       )}
