@@ -6,7 +6,7 @@ import PollItem from 'components/dashboard/PollItem';
 import PageTitle from 'components/common/PageTitle';
 import { fetchPolls, navigateToPoll } from 'actions/polls';
 import AsyncProgressComponent from 'components/AsyncProgressComponent';
-import NewPollButton from './polls/NewPollButton';
+import NewPollButton from 'components/poll/NewPollButton';
 import { MessageContainer, PollsContainer } from 'styled/polls';
 
 function Dashboard({ history }) {
