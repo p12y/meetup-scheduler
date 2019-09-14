@@ -48,6 +48,11 @@ const polls = (
         isPerformingAsync:
           action.componentName === 'polls' ? true : state.isPerformingAsync,
       };
+    case 'UNSUBSCRIBE_POLL':
+      return {
+        ...state,
+        pollData: null,
+      };
     default:
       return state;
   }
