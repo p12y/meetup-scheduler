@@ -4,7 +4,7 @@ import { withRouter } from 'react-router';
 import { Text, Box } from 'grommet';
 import PollItem from 'components/dashboard/PollItem';
 import PageTitle from 'components/common/PageTitle';
-import { fetchPolls, navigateToPoll } from 'actions/polls';
+import { fetchPolls, navigateToPoll, clearPolls } from 'actions/polls';
 import AsyncProgressComponent from 'components/AsyncProgressComponent';
 import NewPollButton from 'components/poll/NewPollButton';
 import { MessageContainer, PollsContainer } from 'styled/polls';
@@ -19,6 +19,7 @@ function Dashboard({ history }) {
 
   useEffect(() => {
     if (currentUserId) dispatch(fetchPolls(currentUserId));
+    return () => dispatch(clearPolls());
   }, [dispatch, currentUserId]);
 
   const renderPolls = () => {

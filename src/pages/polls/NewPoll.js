@@ -17,6 +17,7 @@ import { withRouter } from 'react-router';
 import DateBox from 'components/poll/DateBox';
 import PageTitle from 'components/common/PageTitle';
 import { createPoll } from 'actions/polls';
+import AsyncProgressComponent from 'components/AsyncProgressComponent';
 
 const Container = styled.div`
   margin-left: auto;
@@ -34,6 +35,7 @@ function NewPoll({ history }) {
   const dispatch = useDispatch();
   const [dates, setDates] = useState([]);
   const currentUser = useSelector(state => state.auth.currentUser);
+  const isPerformingAsync = useSelector(state => state.polls.isPerformingAsync);
 
   function setSortedDates(dates) {
     const sortedDates = [...dates].sort((a, b) => moment(a).diff(moment(b)));
@@ -63,65 +65,71 @@ function NewPoll({ history }) {
   };
 
   return (
-    <Container>
-      <PageTitle title="New poll" />
-      <Form onSubmit={handleSubmit}>
-        <Grid
-          rows={size === 'small' ? ['auto', 'auto', 'auto'] : ['auto']}
-          columns={size === 'small' ? ['full'] : ['1/2', '1/2']}
-          gap="small"
-        >
-          <Box align="center" justify="center">
-            <FormContainer>
-              <FormField name="name" label="Name" required />
-              <FormField name="location" label="Location" required />
-              <FormField name="description" label="Description" as="textarea" />
-            </FormContainer>
-          </Box>
-          <Box align={size === 'small' ? 'start' : 'center'} justify="center">
+    <AsyncProgressComponent isPerformingAsync={isPerformingAsync}>
+      <Container>
+        <PageTitle title="New poll" />
+        <Form onSubmit={handleSubmit}>
+          <Grid
+            rows={size === 'small' ? ['auto', 'auto', 'auto'] : ['auto']}
+            columns={size === 'small' ? ['full'] : ['1/2', '1/2']}
+            gap="small"
+          >
+            <Box align="center" justify="center">
+              <FormContainer>
+                <FormField name="name" label="Name" required />
+                <FormField name="location" label="Location" required />
+                <FormField
+                  name="description"
+                  label="Description"
+                  as="textarea"
+                />
+              </FormContainer>
+            </Box>
+            <Box align={size === 'small' ? 'start' : 'center'} justify="center">
+              <Box
+                margin={{
+                  top: size === 'small' ? 'medium' : 'none',
+                  bottom: size === 'small' ? 'medium' : 'none',
+                }}
+              >
+                <Calendar
+                  daysOfWeek
+                  size={size === 'small' ? 'small' : 'medium'}
+                  dates={dates}
+                  onSelect={selectDate}
+                  alignSelf="start"
+                />
+              </Box>
+            </Box>
+          </Grid>
+          <Box>
+            <Text margin={{ bottom: 'medium' }}>
+              {dates.length ? 'Selected dates' : 'No dates selected'}
+            </Text>
             <Box
-              margin={{
-                top: size === 'small' ? 'medium' : 'none',
-                bottom: size === 'small' ? 'medium' : 'none',
-              }}
+              direction="row"
+              wrap
+              fill
+              align="center"
+              justify={size === 'small' ? 'center' : 'stretch'}
             >
-              <Calendar
-                daysOfWeek
-                size={size === 'small' ? 'small' : 'medium'}
-                dates={dates}
-                onSelect={selectDate}
-                alignSelf="start"
-              />
+              {dates.map(date => (
+                <DateBox date={date} key={date} />
+              ))}
             </Box>
           </Box>
-        </Grid>
-        <Box>
-          <Text margin={{ bottom: 'medium' }}>
-            {dates.length ? 'Selected dates' : 'No dates selected'}
-          </Text>
-          <Box
-            direction="row"
-            wrap
-            fill
-            align="center"
-            justify={size === 'small' ? 'center' : 'stretch'}
-          >
-            {dates.map(date => (
-              <DateBox date={date} key={date} />
-            ))}
+          <Box align="end" margin={{ top: 'medium' }}>
+            <Button
+              disabled={!dates.length}
+              label="Continue"
+              primary
+              type="submit"
+              icon={<FormNextLink />}
+            />
           </Box>
-        </Box>
-        <Box align="end" margin={{ top: 'medium' }}>
-          <Button
-            disabled={!dates.length}
-            label="Continue"
-            primary
-            type="submit"
-            icon={<FormNextLink />}
-          />
-        </Box>
-      </Form>
-    </Container>
+        </Form>
+      </Container>
+    </AsyncProgressComponent>
   );
 }
 

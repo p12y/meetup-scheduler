@@ -1,6 +1,6 @@
 import firebase from 'lib/firebase';
 import { error, success } from 'react-toastify-redux';
-import { setPerformingAsync } from 'actions/common';
+import { setPerformingAsync, unsetPerformingAsync } from 'actions/common';
 
 const pollObserver = {};
 
@@ -19,6 +19,8 @@ export const createPoll = ({
   description,
   history,
 }) => async dispatch => {
+  console.log('CREATE_POLL');
+  dispatch(setPerformingAsync('polls'));
   try {
     const newDocRef = firebase
       .firestore()
@@ -47,6 +49,7 @@ export const createPoll = ({
     console.error(err);
     dispatch(error("Poll couldn't be created."));
   }
+  dispatch(unsetPerformingAsync('polls'));
 };
 
 export const fetchPoll = id => async dispatch => {
@@ -199,6 +202,10 @@ export const fetchPolls = uid => async dispatch => {
     });
   }
 };
+
+export const clearPolls = () => ({
+  type: 'CLEAR_POLLS',
+});
 
 export const navigateToPoll = ({ history, id }) => {
   history.push(`/p/${id}`);

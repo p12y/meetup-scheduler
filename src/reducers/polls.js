@@ -53,6 +53,11 @@ const polls = (
         ...state,
         pollData: null,
       };
+    case 'CLEAR_POLLS': 
+      return {
+        ...state,
+        userPolls: null,
+      }
     default:
       return state;
   }
