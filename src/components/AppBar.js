@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { withRouter } from 'react-router-dom';
 import { Box, Button, Heading, Menu } from 'grommet';
 import { Login, User } from 'grommet-icons';
 import { useDispatch, useSelector } from 'react-redux';
@@ -29,7 +30,7 @@ const ProfileContainer = styled.div`
   margin-right: 0.5rem;
 `;
 
-function AppBar() {
+function AppBar({ history }) {
   const dispatch = useDispatch();
   const currentUser = useSelector(state => state.auth).currentUser;
   const renderAccountButton = useCallback(() => {
@@ -57,7 +58,13 @@ function AppBar() {
         {currentUser ? (
           <Menu
             label={renderAccountButton()}
-            items={[{ label: 'Sign out', onClick: () => dispatch(signOut()) }]}
+            items={[
+              {
+                label: 'Your polls',
+                onClick: () => history.push('/dashboard'),
+              },
+              { label: 'Sign out', onClick: () => dispatch(signOut()) },
+            ]}
           />
         ) : (
           <Button icon={<Login />} onClick={() => dispatch(openLoginLayer())} />
@@ -67,4 +74,4 @@ function AppBar() {
   );
 }
 
-export default AppBar;
+export default withRouter(AppBar);
