@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
-import { Box, Button, Heading } from 'grommet';
-import { Login, Logout } from 'grommet-icons';
+import { Box, Button, Heading, Menu } from 'grommet';
+import { Login, User } from 'grommet-icons';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { openLoginLayer, signOut } from 'actions/auth';
@@ -33,18 +33,18 @@ function AppBar() {
   const dispatch = useDispatch();
   const currentUser = useSelector(state => state.auth).currentUser;
   const renderAccountButton = useCallback(() => {
-    const photoURL = currentUser.photoURL;
+    const photoURL = currentUser && currentUser.photoURL;
     if (photoURL) {
       return (
-        <ProfileImageButton onClick={() => dispatch(signOut())}>
+        <ProfileImageButton>
           <ImageContainer>
             <ProfileImage src={photoURL} />
           </ImageContainer>
         </ProfileImageButton>
       );
     }
-    return <Button icon={<Logout />} onClick={() => dispatch(signOut())} />;
-  }, [dispatch, currentUser]);
+    return <User />;
+  }, [currentUser]);
 
   return (
     <Bar>
@@ -55,7 +55,10 @@ function AppBar() {
       </UnstyledLink>
       <ProfileContainer>
         {currentUser ? (
-          renderAccountButton()
+          <Menu
+            label={renderAccountButton()}
+            items={[{ label: 'Sign out', onClick: () => dispatch(signOut()) }]}
+          />
         ) : (
           <Button icon={<Login />} onClick={() => dispatch(openLoginLayer())} />
         )}
