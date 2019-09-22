@@ -19,7 +19,6 @@ export const createPoll = ({
   description,
   history,
 }) => async dispatch => {
-  console.log('CREATE_POLL');
   dispatch(setPerformingAsync('polls'));
   try {
     const newDocRef = firebase
