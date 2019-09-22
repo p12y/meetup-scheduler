@@ -11,6 +11,13 @@ import AsyncProgressComponent from 'components/AsyncProgressComponent';
 
 const providerNames = providers.providerNames;
 
+const headerMargin = {
+  top: 'none',
+  right: 'small',
+  bottom: 'none',
+  left: 'none',
+};
+
 function LoginLayer() {
   const open = useSelector(state => state.auth.loginLayerOpen);
   const formState = useSelector(state => state.auth.formState);
@@ -39,10 +46,15 @@ function LoginLayer() {
               onSubmit={onClose}
             >
               <Box flex={false} direction="row" justify="between">
-                <Heading level={3} margin="none">
+                <Heading level={3} margin={headerMargin}>
                   Sign in to continue!
                 </Heading>
-                <Button icon={<GrommetIcons.Close />} onClick={onClose} plain />
+                <Button
+                  icon={<GrommetIcons.Close />}
+                  onClick={onClose}
+                  plain
+                  margin={headerMargin}
+                />
               </Box>
               <>
                 {formState === SIGN_IN_WITH_PROVIDERS ? (
