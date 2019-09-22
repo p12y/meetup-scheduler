@@ -29,6 +29,7 @@ function Poll({ match }) {
   const dispatch = useDispatch();
   const size = useContext(ResponsiveContext);
   const pollData = useSelector(state => state.polls.pollData);
+  const currentUser = useSelector(state => state.auth.currentUser);
   const topDate = useSelector(state => state.polls.topDate);
   const isLoading = useSelector(state => state.polls.isLoading);
   const isPerformingAsync = useSelector(state => state.polls.isPerformingAsync);
@@ -55,11 +56,13 @@ function Poll({ match }) {
               <Box pad="small">
                 <PageTitle size="small" title={pollData.name} />
                 <Paragraph alignSelf="center" margin="none" pad="none">
-                  <Button
-                    label="Share"
-                    icon={<ShareOption />}
-                    onClick={() => setIsShareLayerOpen(true)}
-                  />
+                  {currentUser && (
+                    <Button
+                      label="Share"
+                      icon={<ShareOption />}
+                      onClick={() => setIsShareLayerOpen(true)}
+                    />
+                  )}
                 </Paragraph>
 
                 {pollData.description && (
