@@ -6,7 +6,7 @@ export const Slider = styled.div`
   height: 5px;
   overflow-x: hidden;
   ${({ sticky }) => sticky && stickyStyle}
-  z-index: 99;
+  z-index: 3;
 `;
 
 export const Line = styled.div`
